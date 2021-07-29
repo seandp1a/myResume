@@ -1,0 +1,34 @@
+<div class="d-flex flex-column align-items-center">
+  <h1>UserList</h1>
+  <div class="d-flex w-50 align-items-center ">
+    <select class="mx-1 col-4 custom-select"  [(ngModel)]="searchType">
+      <option selected="selceted" value="0">ID</option>
+      <option value="1">NAME</option>
+      <option value="2">EMAIL</option>
+    </select>
+    <input class="mx-1 col-6 form-control" type="text" [(ngModel)]="searchText"
+    (ngModelChange)="doSearch()">
+    <div class="mx-1 col-2 btn btn-success my-2" style="width: 2rem;" (click)="getUserList()" >重整</div>
+  </div>
+
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th>UserID</th>
+        <th>UserEmail</th>
+        <th>UserName</th>
+        <th>CreatedDate</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userListToView">
+        <td>{{user.id}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.created_at | date:'yyyy-MM-dd' }}</td>
+        <td>{{user.email_verified_at?'以驗證':'尚未驗證'}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

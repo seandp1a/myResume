@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit {
         return;
       }
       alert('後端還沒架起來，是要送去哪：）');
+      this.showWarn = false;
+      return;
     }
     this.showWarn = true;
   }
