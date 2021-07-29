@@ -12,12 +12,12 @@ export class HomeComponent implements OnInit {
   inputText: String;
   send() {
     if (this.inputText) {
+      this.showWarn = false;
       if (this.inputText.trim() === '') {
         this.showWarn = true;
         return;
       }
       alert('後端還沒架起來，是要送去哪：）');
-      this.showWarn = false;
       return;
     }
     this.showWarn = true;
