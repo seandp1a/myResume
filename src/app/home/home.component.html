@@ -1,0 +1,17 @@
+<div class="d-flex flex-column">
+
+  <h1 class="text-center">Home</h1>
+  <textarea
+  name="myTextArea"
+  id="myTextArea"
+  cols="60" rows="10"
+  class="form-group mx-auto"
+  [(ngModel)]="inputText"
+  ></textarea>
+
+  <span class="text-danger mx-auto " style="font-weight: bold;" *ngIf="showWarn">你沒輸入東西送三小?</span>
+  <button class="mx-auto btn btn-primary mt-2" style="width: 5rem;"
+  (click)="send()">送出</button>
+</div>
+
+<!-- <div><code>observable|async</code>: Time: {{ time | async }}</div> -->
