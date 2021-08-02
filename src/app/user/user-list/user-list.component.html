@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <table class="table table-dark table-responsive">
+  <table class="table table-dark table-responsive my-3 user-list">
     <thead>
       <tr>
         <th>UserID</th>
@@ -29,7 +29,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of userListToView">
+      <tr class="user-tr" *ngFor="let user of userListToView">
         <td class="col-1">{{user.id}}</td>
         <td class="col-4" style="word-wrap:break-all;">{{user.email}}</td>
         <td class="col-3">{{user.name}}</td>

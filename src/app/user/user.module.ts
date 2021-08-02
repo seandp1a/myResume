@@ -4,12 +4,11 @@ import { CommonModule } from '@angular/common';
 import { UserListComponent } from './user-list/user-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
-import { FormValidataorComponent } from './register/form-validataor/form-validataor.component';
 
 
 
 @NgModule({
-  declarations: [UserListComponent, RegisterComponent, FormValidataorComponent],
+  declarations: [UserListComponent, RegisterComponent],
   imports: [
     CommonModule,UserRoutingModule,FormsModule,ReactiveFormsModule
   ]

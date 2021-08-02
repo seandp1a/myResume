@@ -1,0 +1,6 @@
+
+.user-list > tbody > tr:hover {
+  cursor: pointer;
+  background-color: black;
+  color: white;
+}
