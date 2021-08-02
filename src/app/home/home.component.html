@@ -1,19 +1,19 @@
-<ng-container class="d-flex flex-column">
+<div class="d-flex flex-column align-items-center">
 
 
   <h1 class="text-center">Home</h1>
   <h4 class=" text-center">留個言吧</h4>
   <textarea
-  name="myTextArea"
-  id="myTextArea"
-  cols="60" rows="10"
-  class="form-group mx-auto"
-  [(ngModel)]="inputText"
+    name="myTextArea"
+    id="myTextArea"
+    cols="60" rows="10"
+    class="form-group mx-auto"
+    [(ngModel)]="inputText"
   ></textarea>
 
   <span class="text-danger mx-auto " style="font-weight: bold;" *ngIf="showWarn">你沒輸入東西送三小?</span>
   <button class="mx-auto btn btn-primary mt-2" style="width: 5rem;"
   (click)="send()">送出</button>
-</ng-container>
+</div>
 
 <!-- <div><code>observable|async</code>: Time: {{ time | async }}</div> -->

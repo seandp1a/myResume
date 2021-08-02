@@ -10,6 +10,8 @@ export class HomeComponent implements OnInit {
   constructor() { }
   showWarn: boolean = false;
   inputText: String;
+
+
   send() {
     if (this.inputText) {
       this.showWarn = false;

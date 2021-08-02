@@ -1,4 +1,4 @@
-<div class="d-flex flex-column align-items-center">
+<div class="d-flex flex-column align-items-center my-4">
   <h1>UserList</h1>
   <div class="d-block text-center d-md-flex  align-items-center justify-content-center">
     <select class="mx-1 my-2 my-md-0 custom-select" style="width: 5rem;"  [(ngModel)]="searchType">
@@ -10,8 +10,11 @@
     (ngModelChange)="doSearch()">
     <div class="mx-1 my-2 my-md-0 d-flex text-center">
       <button class="mx-3 btn btn-success my-2"style="width: 5rem;" (click)="getUserList()" >重整</button>
-      <button class="mx-3 btn btn-success my-2"style="width: 5rem;" (click)="getUserList()"
-      data-toggle="modal" data-target="#exampleModal">新增</button>
+      <!-- <button class="mx-3 btn btn-success my-2"style="width: 5rem;" (click)="getUserList()"
+      data-toggle="modal" data-target="#insertModal">新增</button>  -->
+     <a routerLink="/userList/register">
+      <button class="mx-3 btn btn-success my-2" style="width: 5rem;">新增</button>
+    </a>
     </div>
   </div>
 
@@ -31,28 +34,28 @@
         <td class="col-4" style="word-wrap:break-all;">{{user.email}}</td>
         <td class="col-3">{{user.name}}</td>
         <td class="col-2">{{user.created_at | date:'yyyy-MM-dd' }}</td>
-        <td class="col-2">{{user.email_verified_at?'以驗證':'尚未驗證'}}</td>
+        <td class="col-2">{{user.email_verified_at?'已驗證':'尚未驗證'}}</td>
       </tr>
     </tbody>
   </table>
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">新增妳妹</h5>
+        <h5 class="modal-title" id="insertModalLabel">EDIT</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        API是寫好了?
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="insertUser()" >Send</button>
       </div>
     </div>
   </div>
