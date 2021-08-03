@@ -1,4 +1,3 @@
-import { REGEX_EMAIL, REGEX_PASSWORD } from './../../services/regex';
 import { userData, UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,18 +9,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class UserListComponent implements OnInit {
 
-  public userList: userData[];
+  private userList: userData[];
   public userListToView: userData[];
+  private userListTemp:userData[];
   public searchText: string;
   public searchType: string = '0';
-  public successAlert:boolean = false;
+
+  public perPage = 10;
+  public currentPage = 1;
+  public totalPage:number;
+  public pageArr:number[]=[];
 
   public insertFormGroup: FormGroup; // 新增表單控制
-
-  get newName() { return this.insertFormGroup.get('newName'); }
-  get newEmail() { return this.insertFormGroup.get('newEmail'); }
-  get newPassword() { return this.insertFormGroup.get('newPassword'); }
-
 
   constructor(
     private userSvc: UserService,
@@ -32,65 +31,68 @@ export class UserListComponent implements OnInit {
   public getUserList() {
     this.userSvc.getUserList().subscribe((response) => {
       this.userList = response;
-      this.userListToView = response;
+      this.searchText === ""
+      this.doSearch();
     })
   }
 
+  // 針對userListTemp(篩後結果)進行分頁切割並顯示在網頁上
+  public renderPage(page:number){
+    this.currentPage = page;
+    const firstIndex = (this.currentPage-1)*this.perPage;
+    this.userListToView = this.userListTemp.slice(firstIndex,firstIndex+ this.perPage);
+  }
+
+
   // 新增user
   public insertUser() {
-    const name = this.insertFormGroup.value.newName;
-    const email = this.insertFormGroup.value.newEmail;
-    const password = this.insertFormGroup.value.newPassword;
-    if (name === '' || name === undefined) return;
-    if (email === '' || email === undefined) return;
-    if (password === '' || password === undefined) return;
-    const body = { name: name, email: email, password: password }
-    this.userSvc.insertUser(body).subscribe((res)=>{
-      if(res.code === 200){
-        this.successAlert=true;
-        setTimeout(() => {
-          this.insertFormGroup.reset();
-          this.insertFormGroup.setValue({newEmail:'',newName:'',newPassword:''})
-          this.successAlert=false;
-        }, 1500);
-      }else{
-        const errEmail=res.message.email?`\nEmail錯誤：${res.message.email}`:'';
-        const errPassword=res.message.password?`\nPassword錯誤：${res.message.password}`:'';
-        alert(`錯誤代碼：${res.code}${errEmail}${errPassword}`);
-      }
-    })
+
+  }
+
+
+  private resetPage(){
+    this.totalPage = Math.ceil(this.userListTemp.length / this.perPage);
+    this.pageArr=[];
+    for(let i =0 ;i<this.totalPage;i++){
+      this.pageArr.push(i+1);
+    }
   }
 
   // 執行篩選
   public doSearch() {
+    // 無篩選的話，直接將總資料丟到userListTemp
     if (this.searchText === "" || this.searchText === undefined) {
-      this.userListToView = this.userList;
+      this.userListTemp = this.userList;
+      this.resetPage();
+      this.renderPage(1);
       return;
     }
+    // 有篩選的話，先用temp存篩後結果，再丟到userListTemp
+    let temp:userData[];
     if (this.searchType === '0') {
-      this.userListToView = this.userList.filter((user) => {
+      temp = this.userList.filter((user) => {
         return user.id.toString().includes(this.searchText);
-      })
+      });
+
     }
     if (this.searchType === '1') {
-      this.userListToView = this.userList.filter((user) => {
+      temp = this.userList.filter((user) => {
         return user.name.toLowerCase().includes(this.searchText.toLowerCase());
       })
     }
     if (this.searchType === '2') {
-      this.userListToView = this.userList.filter((user) => {
+      temp = this.userList.filter((user) => {
         return user.email.toLowerCase().includes(this.searchText.toLowerCase());
       })
     }
+    this.userListTemp = temp;
+    this.resetPage();
+    this.renderPage(1);
   }
 
   ngOnInit(): void {
     this.getUserList();
-    this.insertFormGroup = this.formBuilder.group({
-      newEmail: ['', Validators.required],
-      newPassword: ['', Validators.required],
-      newName: ['', Validators.required]
-    });
+
   }
 
 }

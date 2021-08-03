@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <table class="table table-dark table-responsive my-3 user-list">
+  <table class="table table-dark table-responsive my-3 user-list d-md-table">
     <thead>
       <tr>
         <th>UserID</th>
@@ -39,6 +39,33 @@
     </tbody>
   </table>
 
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item" [ngClass]="{disabled:1 === currentPage}">
+        <a class="page-link" (click)="renderPage(1)">
+          <span aria-hidden="true">∥&#060;</span>
+        </a>
+      </li>
+      <li class="page-item" [ngClass]="{disabled:1 === currentPage}">
+        <a class="page-link" (click)="renderPage(currentPage-1)">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item" [ngClass]="{active:item === currentPage}" *ngFor="let item of pageArr">
+        <a class="page-link" (click)="renderPage(item)" >{{item}}</a>
+      </li>
+      <li class="page-item" [ngClass]="{disabled:totalPage === currentPage}">
+        <a class="page-link"(click)="renderPage(currentPage+1)">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+      <li class="page-item" [ngClass]="{disabled:totalPage === currentPage}">
+        <a class="page-link"(click)="renderPage(totalPage)">
+          <span aria-hidden="true">&#062;∥</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 
 <!-- Modal -->
 <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
