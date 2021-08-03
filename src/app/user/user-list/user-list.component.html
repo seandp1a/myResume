@@ -1,12 +1,14 @@
 <div class="d-flex flex-column align-items-center my-4">
   <h1>UserList</h1>
   <div class="d-block text-center d-md-flex  align-items-center justify-content-center">
-    <select class="mx-1 my-2 my-md-0 custom-select" style="width: 5rem;" [(ngModel)]="searchType">
+    <select class="mx-1 my-2 my-md-0 custom-select" style="width: 7rem;" [(ngModel)]="searchType">
       <option selected="selceted" value="0">ID</option>
       <option value="1">NAME</option>
       <option value="2">EMAIL</option>
     </select>
-    <input class=" mx-1 my-2 my-md-0 form-control w-80" type="text" [(ngModel)]="searchText"
+    <input class=" mx-1 my-2 my-md-0 form-control w-80" type="text"
+      [(ngModel)]="searchText"
+      [ngbTypeahead]="search"
       (ngModelChange)="doSearch()">
     <div class="mx-1 my-2 my-md-0 d-flex text-center">
       <button class="mx-3 btn btn-success my-2" style="width: 5rem;" (click)="getUserList()">重整</button>
@@ -17,6 +19,11 @@
       </a>
     </div>
   </div>
+
+<!-- test -->
+    <pre >Model: </pre>
+<!-- test -->
+
 
   <table class="table table-dark table-responsive my-3 user-list d-md-table">
     <thead>

@@ -1,3 +1,4 @@
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserRoutingModule } from './user-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,7 +12,7 @@ import { UserModalComponent } from './user-modal/user-modal.component';
 @NgModule({
   declarations: [UserListComponent, RegisterComponent, UserModalComponent],
   imports: [
-    CommonModule,UserRoutingModule,FormsModule,ReactiveFormsModule
+    CommonModule, UserRoutingModule, FormsModule, ReactiveFormsModule, NgbModule
   ]
 })
 export class UserModule { }
