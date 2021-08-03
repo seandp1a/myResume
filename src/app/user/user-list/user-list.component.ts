@@ -105,7 +105,7 @@ export class UserListComponent implements OnInit {
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      map(term => term.length < 2 ? []
+      map(term => term.length < 1 ? []
         : this.makeSearchArray().filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     )
 
