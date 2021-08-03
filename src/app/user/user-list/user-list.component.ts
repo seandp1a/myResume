@@ -2,7 +2,7 @@ import { userData, UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, OperatorFunction } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-list',
@@ -11,10 +11,12 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 })
 export class UserListComponent implements OnInit {
 
+  // 資料相關
   private userList: userData[];
   public userListToView: userData[];
   private userListTemp: userData[];
 
+  // 搜尋相關
   public searchText: string;
   public searchType: string = '0';
   public searchTypeName: string;
@@ -24,6 +26,7 @@ export class UserListComponent implements OnInit {
     '2': 'email'
   };
 
+  // 頁碼相關
   public perPage = 10;
   public currentPage = 1;
   public totalPage: number;
@@ -35,6 +38,7 @@ export class UserListComponent implements OnInit {
     private userSvc: UserService,
     private formBuilder: FormBuilder
   ) { }
+
 
   // API 取 user 資料
   public getUserList() {
@@ -73,25 +77,12 @@ export class UserListComponent implements OnInit {
     }
     // 有篩選的話，先用temp存篩後結果，再丟到userListTemp
     let temp: userData[];
-    if (this.searchType === '0') {
-      temp = this.userList.filter((user) => {
-        return user[this.searchTypeName].toString().includes(this.searchText);
-      });
-
-    }
-    if (this.searchType === '1') {
-      temp = this.userList.filter((user) => {
-        return user[this.searchTypeName].toLowerCase().includes(this.searchText.toLowerCase());
-      })
-    }
-    if (this.searchType === '2') {
-      temp = this.userList.filter((user) => {
-        return user[this.searchTypeName].toLowerCase().includes(this.searchText.toLowerCase());
-      })
-    }
+    temp = this.userList.filter((user) => {
+      return user[this.searchTypeName].toString().toLowerCase().includes(this.searchText.toLowerCase());
+    })
     this.userListTemp = temp;
-    this.resetPage();
-    this.renderPage(1);
+    this.resetPage(); // 算頁數
+    this.renderPage(1); // 算完渲染
   }
 
   // 依當前searchType 建立對應的input文字提示陣列
@@ -99,14 +90,14 @@ export class UserListComponent implements OnInit {
     return this.userList.map(v => v[this.searchTypeName].toString())
   }
 
-
   // ng-typeahead 搜尋  readonly 後面放提示文字陣列
   search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      map(term => term.length < 1 ? []
-        : this.makeSearchArray().filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+      filter(term => term.length >= 1),
+      map(term => this.makeSearchArray().filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)),
+
     )
 
   ngOnInit(): void {

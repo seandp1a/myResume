@@ -7,8 +7,10 @@
 .pagination > .page-item:hover:not(.disabled):hover:not(.active):hover > a{
   background-color: rgb(66, 66, 66) ;
   color: white;
+  cursor: pointer;
 }
 .pagination >.page-item.disabled:hover,.page-item.active:hover{
   color: white;
   cursor:default !important;
 }
+

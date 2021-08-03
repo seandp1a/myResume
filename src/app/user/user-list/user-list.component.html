@@ -1,5 +1,6 @@
 <div class="d-flex flex-column align-items-center my-4">
   <h1>UserList</h1>
+  <!-- search Bar -->
   <div class="d-block text-center d-md-flex  align-items-center justify-content-center">
     <select class="mx-1 my-2 my-md-0 custom-select" style="width: 7rem;" [(ngModel)]="searchType">
       <option selected="selceted" value="0">ID</option>
@@ -9,7 +10,9 @@
     <input class=" mx-1 my-2 my-md-0 form-control w-80" type="text"
       [(ngModel)]="searchText"
       [ngbTypeahead]="search"
-      (ngModelChange)="doSearch()">
+      [resultTemplate]="optionBox"
+      (ngModelChange)="doSearch()"
+      >
     <div class="mx-1 my-2 my-md-0 d-flex text-center">
       <button class="mx-3 btn btn-success my-2" style="width: 5rem;" (click)="getUserList()">重整</button>
       <!-- <button class="mx-3 btn btn-success my-2"style="width: 5rem;"
@@ -19,12 +22,22 @@
       </a>
     </div>
   </div>
+  <!-- search Bar -->
 
-<!-- test -->
-    <pre >Model: </pre>
-<!-- test -->
+  <!-- typeahead template -->
+  <ng-template #optionBox let-r="result" let-t="term"  >
+    <img [src]="'https://scontent.ftpe8-3.fna.fbcdn.net/v/t1.18169-9/185492_508902142468970_843995835_n.jpg?_nc_cat=107&ccb=1-3&_nc_sid=174925&_nc_ohc=fC00L-oYDNgAX-12bC7&_nc_ht=scontent.ftpe8-3.fna&oh=f47c69da955fbc3d6ef38809ad284fe3&oe=612D5E9F'" width="40px" height="45px" alt="">
+    <ngb-highlight [result]="r" [term]="t" >
+    </ngb-highlight>
+  </ng-template>
 
+  <!-- typeahead template -->
 
+  <!-- test -->
+
+  <!-- test -->
+
+  <!-- table -->
   <table class="table table-dark table-responsive my-3 user-list d-md-table">
     <thead>
       <tr>
@@ -46,9 +59,11 @@
       </tr>
     </tbody>
   </table>
+  <!-- table -->
 
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
+  <!-- pageNav -->
+  <nav aria-label="Page navigation example ">
+    <ul class="pagination my-3">
       <li class="page-item" [ngClass]="{disabled:1 === currentPage}">
         <a class="page-link" (click)="renderPage(1)">
           <span aria-hidden="true">∥&#060;</span>
@@ -74,10 +89,13 @@
       </li>
     </ul>
   </nav>
+  <!-- pageNav -->
 
   <!-- Modal -->
   <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
     aria-hidden="true">
     <app-user-modal></app-user-modal>
   </div>
+  <!-- Modal -->
+
 </div>
