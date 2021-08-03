@@ -1,20 +1,20 @@
 <div class="d-flex flex-column align-items-center my-4">
   <h1>UserList</h1>
   <div class="d-block text-center d-md-flex  align-items-center justify-content-center">
-    <select class="mx-1 my-2 my-md-0 custom-select" style="width: 5rem;"  [(ngModel)]="searchType">
+    <select class="mx-1 my-2 my-md-0 custom-select" style="width: 5rem;" [(ngModel)]="searchType">
       <option selected="selceted" value="0">ID</option>
       <option value="1">NAME</option>
       <option value="2">EMAIL</option>
     </select>
     <input class=" mx-1 my-2 my-md-0 form-control w-80" type="text" [(ngModel)]="searchText"
-    (ngModelChange)="doSearch()">
+      (ngModelChange)="doSearch()">
     <div class="mx-1 my-2 my-md-0 d-flex text-center">
-      <button class="mx-3 btn btn-success my-2"style="width: 5rem;" (click)="getUserList()" >重整</button>
-      <!-- <button class="mx-3 btn btn-success my-2"style="width: 5rem;" (click)="getUserList()"
-      data-toggle="modal" data-target="#insertModal">新增</button>  -->
-     <a routerLink="/userList/register">
-      <button class="mx-3 btn btn-success my-2" style="width: 5rem;">新增</button>
-    </a>
+      <button class="mx-3 btn btn-success my-2" style="width: 5rem;" (click)="getUserList()">重整</button>
+      <!-- <button class="mx-3 btn btn-success my-2"style="width: 5rem;"
+      data-toggle="modal" data-target="#editModal">EDIT</button> -->
+      <a routerLink="/userList/register">
+        <button class="mx-3 btn btn-success my-2" style="width: 5rem;">新增</button>
+      </a>
     </div>
   </div>
 
@@ -29,7 +29,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="user-tr" *ngFor="let user of userListToView">
+      <tr class="user-tr" *ngFor="let user of userListToView"
+        data-toggle="modal" data-target="#editModal">
         <td class="col-1">{{user.id}}</td>
         <td class="col-4" style="word-wrap:break-all;">{{user.email}}</td>
         <td class="col-3">{{user.name}}</td>
@@ -52,39 +53,24 @@
         </a>
       </li>
       <li class="page-item" [ngClass]="{active:item === currentPage}" *ngFor="let item of pageArr">
-        <a class="page-link" (click)="renderPage(item)" >{{item}}</a>
+        <a class="page-link" (click)="renderPage(item)">{{item}}</a>
       </li>
       <li class="page-item" [ngClass]="{disabled:totalPage === currentPage}">
-        <a class="page-link"(click)="renderPage(currentPage+1)">
+        <a class="page-link" (click)="renderPage(currentPage+1)">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
       <li class="page-item" [ngClass]="{disabled:totalPage === currentPage}">
-        <a class="page-link"(click)="renderPage(totalPage)">
+        <a class="page-link" (click)="renderPage(totalPage)">
           <span aria-hidden="true">&#062;∥</span>
         </a>
       </li>
     </ul>
   </nav>
 
-<!-- Modal -->
-<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="insertModalLabel">EDIT</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="insertUser()" >Send</button>
-      </div>
-    </div>
+  <!-- Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+    aria-hidden="true">
+    <app-user-modal></app-user-modal>
   </div>
-</div>
 </div>
