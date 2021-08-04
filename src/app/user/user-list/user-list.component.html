@@ -50,7 +50,7 @@
     </thead>
     <tbody>
       <tr class="user-tr" *ngFor="let user of userListToView"
-        data-toggle="modal" data-target="#editModal">
+      (click)="open(editModal)">
         <td class="col-1">{{user.id}}</td>
         <td class="col-4" style="word-wrap:break-all;">{{user.email}}</td>
         <td class="col-3">{{user.name}}</td>
@@ -92,10 +92,35 @@
   <!-- pageNav -->
 
   <!-- Modal -->
-  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+  <!-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
     aria-hidden="true">
     <app-user-modal></app-user-modal>
-  </div>
+  </div> -->
+
+  <ng-template #editModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="dateOfBirth">Date of birth</label>
+          <div class="input-group">
+            <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+  </ng-template>
   <!-- Modal -->
 
 </div>
