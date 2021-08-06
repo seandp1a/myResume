@@ -14,7 +14,7 @@ ngb-modal-backdrop  {
 
 ngb-alert {
   animation-name: alert ;
-  animation-duration: .5s;
+  animation-duration: 1s;
 }
 
 @keyframes modal {
@@ -38,36 +38,28 @@ ngb-alert {
   }
 
 }
-@keyframes alert {
- from {
-    -webkit-transform: scale3d(1, 1, 1);
-    transform: scale3d(1, 1, 1);
-  }
+@keyframes alert {0% {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
 
-  10%,
-  20% {
-    -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
-    transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
-  }
+14% {
+  -webkit-transform: scale(1.3);
+  transform: scale(1.3);
+}
 
-  30%,
-  50%,
-  70%,
-  90% {
-    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
-    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
-  }
+28% {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
 
-  40%,
-  60%,
-  80% {
-    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
-    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
-  }
+42% {
+  -webkit-transform: scale(1.3);
+  transform: scale(1.3);
+}
 
-  to {
-    -webkit-transform: scale3d(1, 1, 1);
-    transform: scale3d(1, 1, 1);
-  }
-
+70% {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
 }
