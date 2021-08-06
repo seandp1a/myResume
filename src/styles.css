@@ -2,3 +2,33 @@
 .dropdown-item.active, .dropdown-item:active {
   background-color: rgb(56, 56, 56) !important;
 }
+
+.modal-content{
+  animation-name: example;
+  animation-duration: 0.5s;
+}
+ngb-modal-backdrop  {
+  animation-name: example2;
+  animation-duration: .5s;
+}
+@keyframes example {
+  0%   {
+    transform:translateY(-50px);
+    opacity: 0;
+  }
+  75%  {
+  }
+  100% {
+    opacity: 1;
+  }
+
+}
+@keyframes example2 {
+  0%   {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+
+}

@@ -14,7 +14,7 @@
   cursor:default !important;
 }
 
- .modal.show .modal-dialog {
+ /* .modal.show .modal-dialog {
       transition: 0.25s all;
       opacity: 0;
       transform: translate(0, 5vh);
@@ -23,4 +23,7 @@
  .modal.custom-show .modal-dialog {
       opacity: 1;
       transform: translate(0, 0);
-  }
+  } */
+
+  /* modal animation */
+
