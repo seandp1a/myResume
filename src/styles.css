@@ -4,14 +4,20 @@
 }
 
 .modal-content{
-  animation-name: example;
+  animation-name: modal;
   animation-duration: 0.5s;
 }
 ngb-modal-backdrop  {
-  animation-name: example2;
+  animation-name: modal-bg;
   animation-duration: .5s;
 }
-@keyframes example {
+
+ngb-alert {
+  animation-name: alert ;
+  animation-duration: .5s;
+}
+
+@keyframes modal {
   0%   {
     transform:translateY(-50px);
     opacity: 0;
@@ -23,12 +29,25 @@ ngb-modal-backdrop  {
   }
 
 }
-@keyframes example2 {
+@keyframes modal-bg {
   0%   {
     opacity: 0;
   }
   100% {
     opacity: 0.5;
+  }
+
+}
+@keyframes alert {
+  0%   {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  75%  {
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 
 }

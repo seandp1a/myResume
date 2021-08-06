@@ -1,5 +1,5 @@
 import { GET_USER_LIST, USER_API } from './apiName';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -13,8 +13,12 @@ export class UserService {
     return this.http.get<userData[]>(USER_API);
   }
 
-  insertUser(body:InsertBody) {
+  insertUser(body: InsertBody) {
     return this.http.post<InsertRes>(USER_API, body);
+  }
+
+  editUser(body: EditBody, id: string) {
+    return this.http.put<InsertRes>(USER_API + `/${id}`, body);
   }
 
   deleteUser() {
@@ -32,10 +36,15 @@ export interface userData {
   updated_at: string
 }
 
-export interface InsertBody{
-  name:string,
-  email:string,
-  password:string
+export interface InsertBody {
+  name: string,
+  email: string,
+  password: string
+}
+
+export interface EditBody {
+  name: string,
+  password: string,
 }
 
 export interface InsertRes {
@@ -47,5 +56,5 @@ export interface InsertRes {
 export interface InsertResErrorMsg {
   email?: string[];
   password?: string[];
-  name?:string[];
+  name?: string[];
 }

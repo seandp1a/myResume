@@ -33,9 +33,11 @@ export class UserListComponent implements OnInit {
   public totalPage: number;
   public pageArr: number[] = [];
 
-  public insertFormGroup: FormGroup; // 新增表單控制
-
-  closeResult = '';
+  // Modal相關
+  public editFormGroup: FormGroup; // 更新表單控制
+  public formChanged = true;
+  public alertText = '警告！您沒更改任何資料！';
+  public alertType = 'warning';
 
   constructor(
     private userSvc: UserService,
@@ -104,12 +106,31 @@ export class UserListComponent implements OnInit {
 
     )
 
-  open(content) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
+  // 初始化alert
+  private resetAlert() {
+    this.formChanged = true;
+    this.alertType = 'warning';
+    this.alertText = '警告！您沒更改任何資料！';
+  }
+
+  // modal 在template被打開後 丟被指定的modal近來 用modalService去控制這個modal
+  open(content, user: userData) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'md' }).result.then((result) => {
+      // 此處為modal 發生close事件 result為事件觸發原因
+      console.log(`Closed with: ${result}`);
+      this.resetAlert();
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      // 此處為modal 發生dismiss事件 reason為事件觸發原因
+      console.log(`Dismissed ${this.getDismissReason(reason)}`);
+      this.resetAlert();
     });
+    this.editFormGroup = this.formBuilder.group({
+      id: [{ value: user.id, disabled: true }, Validators.required],
+      email: [{ value: user.email, disabled: true }, [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      name: [user.name, [Validators.required, Validators.minLength(2)]]
+    });
+
   }
 
   private getDismissReason(reason: any): string {
@@ -122,9 +143,37 @@ export class UserListComponent implements OnInit {
     }
   }
 
+  public doUpdate(modal) {
+    // input都沒碰過跳alert
+    if (!this.editFormGroup.dirty) {
+      this.formChanged = false;
+      return;
+    }
+    this.formChanged = true;
+    const editBody = {
+      name: this.editFormGroup.value.name,
+      password: this.editFormGroup.value.password
+    }
+    this.userSvc.editUser(editBody, this.editFormGroup.controls['id'].value).subscribe((res) => {
+      if (res.status !== true) {
+        this.formChanged = false;
+        this.alertType = 'danger';
+        this.alertText = (res.message.name ? res.message.name[0] : '') + ' ' + (res.message.password ? res.message.password[0] : '');
+        return
+      }
+      this.formChanged = false;
+      this.alertType = 'success';
+      this.alertText = '修改成功！';
+      setTimeout(() => {
+        modal.close('Update')
+        this.getUserList();
+      }, 1500);
+    })
+
+  }
+
   ngOnInit(): void {
     this.getUserList();
-
   }
 
 }
