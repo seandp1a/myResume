@@ -1,4 +1,4 @@
-import { InsertRes, UserService } from './../../services/user.service';
+import { BackendResponseInfo, UserService } from './../../services/user.service';
 import { REGEX_EMAIL } from './../../services/regex';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
       }
     }
   }
-  private createErrorMsg(res?: InsertRes): void {
+  private createErrorMsg(res?: BackendResponseInfo): void {
     console.log(res);
     for (let i of ['email', 'name', 'password']) {
       if(res.message[i]){
@@ -82,7 +82,8 @@ export class RegisterComponent implements OnInit {
     if(this.insertFormGroup.invalid){
       return;
     }
-    this.userSvc.insertUser(body).subscribe((res: InsertRes) => {
+    this.userSvc.insertUser(body).subscribe((res: BackendResponseInfo) => {
+      console.log(res)
       if (res.code === 200) {
         this.initErrMsg();
         this.successAlert = true;

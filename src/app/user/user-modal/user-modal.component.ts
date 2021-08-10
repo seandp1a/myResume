@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { UserService } from './../../services/user.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-user-modal',
@@ -6,13 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-modal.component.css']
 })
 export class UserModalComponent implements OnInit {
+  @Input() id;
 
-  constructor() { }
+  constructor(public activeModal: NgbActiveModal,private userSvc:UserService) { }
 
-  public editUser(){
-
+  public doDelete(modal){
+    this.userSvc.deleteUser(this.id.toString()).subscribe((res)=>{
+      console.log(res)
+    })
+    modal.close();
   }
   ngOnInit(): void {
+    console.log(this.id);
   }
 
 }

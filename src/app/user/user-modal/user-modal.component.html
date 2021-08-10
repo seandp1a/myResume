@@ -1,19 +1,13 @@
-
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">EDIT</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="editUser()" >Send</button>
-      </div>
-    </div>
-  </div>
-
+<div class="modal-header">
+  <h4 class="modal-title text-danger">確定要刪除嗎？</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngb-alert [type]="'danger'" [dismissible]="false">此操作無法回復！</ngb-alert>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-danger mr-auto" (click)="doDelete(activeModal)">確定刪除</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss()">Close</button>
+</div>

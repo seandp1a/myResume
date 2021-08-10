@@ -1,9 +1,10 @@
-import { userData, UserService } from './../../services/user.service';
+import { UserData, UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserModalComponent } from '../user-modal/user-modal.component';
 
 
 
@@ -15,12 +16,12 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class UserListComponent implements OnInit {
 
   // 資料相關
-  private userList: userData[];
-  public userListToView: userData[];
-  private userListTemp: userData[];
+  private userList: UserData[];
+  public userListToView: UserData[];
+  private userListTemp: UserData[];
 
   // 搜尋相關
-  public searchContent: userData | string;
+  public searchContent: UserData | string;
   public searchType: string = '0';
   public searchTypeName: string;
   private searchTypeMap = {
@@ -88,15 +89,15 @@ export class UserListComponent implements OnInit {
     }
 
     // 有篩選的話，先用temp存篩後結果，再丟到userListTemp
-    let temp: userData[];
+    let temp: UserData[];
 
     // 當點了搜尋提示選項，ngmodel type 會變成物件，且篩選結果會變成只有一筆資料
     if (typeof (this.searchContent) === 'object') {
-      const userId =this.searchContent.id;
-      temp = this.userList.filter((user)=>{
+      const userId = this.searchContent.id;
+      temp = this.userList.filter((user) => {
         return user.id === userId;
       })
-    }else{
+    } else {
       temp = this.userList.filter((user) => {
         return user[this.searchTypeName].toString().toLowerCase().includes(this.searchContent.toString().toLowerCase());
       })
@@ -107,10 +108,10 @@ export class UserListComponent implements OnInit {
   }
 
   // typeahead input/output 顯示轉型
-  formatter = (state: userData) => state[this.searchTypeName];
+  formatter = (state: UserData) => state[this.searchTypeName];
 
   // ng-typeahead 搜尋  readonly 後面放提示文字陣列
-  search: OperatorFunction<string, readonly userData[]> = (text$: Observable<string>) =>
+  search: OperatorFunction<string, readonly UserData[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
@@ -118,7 +119,7 @@ export class UserListComponent implements OnInit {
       map(term => this.userList.filter(v => v[this.searchTypeName].toString().toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)),
     )
 
-  // 初始化alert
+  // 初始化 modal alert
   private resetAlert() {
     this.formChanged = true;
     this.alertType = 'warning';
@@ -126,7 +127,7 @@ export class UserListComponent implements OnInit {
   }
 
   // modal 在template被打開後 丟被指定的modal近來 用modalService去控制這個modal
-  open(content, user: userData) {
+  open(content, user: UserData) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'md' }).result.then((result) => {
       // 此處為modal 發生close事件 result為事件觸發原因
       console.log(`Closed with: ${result}`);
@@ -170,7 +171,11 @@ export class UserListComponent implements OnInit {
       if (res.status !== true) {
         this.formChanged = false;
         this.alertType = 'danger';
-        this.alertText = (res.message.name ? res.message.name[0] : '') + ' ' + (res.message.password ? res.message.password[0] : '');
+        this.alertText =
+          (res.message.name ? res.message.name[0] : '') + ' ' +
+          (res.message.password ? res.message.password[0] : '') + ' ' +
+          (res.message.member_token ? '尚未登入' : '');
+        console.log('更新失敗res：', res)
         return
       }
       this.formChanged = false;
@@ -182,6 +187,16 @@ export class UserListComponent implements OnInit {
       }, 1500);
     })
 
+  }
+
+  public doDelete(modal) {
+    const modalRef = this.modalService.open(UserModalComponent, { size: 'md' });
+    modalRef.componentInstance.id = this.editFormGroup.controls.id.value;
+    modalRef.result.then((result) => {
+      modal.close();
+    }, (reason) => {
+      console.log('取消刪除');
+    })
   }
 
   ngOnInit(): void {

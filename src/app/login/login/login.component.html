@@ -1,1 +1,19 @@
-<p>login works!</p>
+<h1 class="text-center mt-4"> Login 登入 </h1>
+<form novalidate class="w-50 mx-auto">
+  <div class="alert alert-success fade mb-0" [class]="{show:isSuccess}">登入成功</div>
+
+  <div class="form-group">
+    <label for="">Email</label>
+    <input class="form-control" type="email" name="email" id="email" [ngModel]="email">
+
+  </div>
+  <div class="form-group">
+    <label for="">Password</label>
+    <input class="form-control" type="password" name="password" id="password" [ngModel]="password">
+  </div>
+
+  <div class="d-flex justify-content-end align-items-center">
+
+    <button class="btn btn-primary ml-3" (click)="doLogin()">登入</button>
+  </div>
+</form>

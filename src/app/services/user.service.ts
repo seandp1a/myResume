@@ -1,4 +1,4 @@
-import { GET_USER_LIST, USER_API } from './apiName';
+import { GET_USER_LIST, USER_API, LOGIN_API } from './apiName';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -10,24 +10,50 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getUserList() {
-    return this.http.get<userData[]>(USER_API);
+    return this.http.get<UserData[]>(USER_API);
   }
 
-  insertUser(body: InsertBody) {
-    return this.http.post<InsertRes>(USER_API, body);
+  insertUser(body: { name: string,email: string,password: string }) {
+    return this.http.post<BackendResponseInfo>(USER_API, body);
   }
 
-  editUser(body: EditBody, id: string) {
-    return this.http.put<InsertRes>(USER_API + `/${id}`, body);
+  editUser(body: { name: string, password: string, }, id: string) {
+    return this.http.put<BackendResponseInfo>(USER_API + `/${id}`, body);
   }
 
-  deleteUser() {
+  deleteUser(id: string) {
+    return this.http.delete<any>(USER_API + `/${id}`)
+  }
 
+  loginUser(body: { email: string; password: string }) {
+    return this.http.post<LoginResponse>(LOGIN_API, body)
   }
 
 }
 
-export interface userData {
+export interface BackendResponseInfo{
+  code: number,
+  message: ResponseMsg,
+  status: boolean
+}
+export interface ResponseMsg {
+  email?: string[];
+  password?: string[];
+  name?: string[];
+  member_token?: string[];
+}
+
+export interface LoginResponse extends BackendResponseInfo{
+  data:{
+    id:number,
+    name:string,
+    email:string,
+    image:string,
+    member_token:string
+  }
+}
+
+export interface UserData {
   id: string,
   name: string,
   email: string,
@@ -36,25 +62,4 @@ export interface userData {
   image: string
 }
 
-export interface InsertBody {
-  name: string,
-  email: string,
-  password: string
-}
 
-export interface EditBody {
-  name: string,
-  password: string,
-}
-
-export interface InsertRes {
-  code: number,
-  message: InsertResErrorMsg,
-  status: boolean
-}
-
-export interface InsertResErrorMsg {
-  email?: string[];
-  password?: string[];
-  name?: string[];
-}

@@ -32,12 +32,7 @@
     <ngb-highlight [result]="r[searchTypeName]" [term]="t" >
     </ngb-highlight>
   </ng-template>
-
   <!-- typeahead template -->
-
-  <!-- test -->
-
-  <!-- test -->
 
   <!-- table -->
   <table class="table table-dark table-responsive my-3 user-list d-md-table">
@@ -94,10 +89,6 @@
   <!-- pageNav -->
 
   <!-- Modal -->
-  <!-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-    aria-hidden="true">
-    <app-user-modal></app-user-modal>
-  </div> -->
 
   <ng-template #editModal let-modal>
     <div class="modal-header">
@@ -107,7 +98,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <ngb-alert [type]="alertType" [dismissible]="false" *ngIf="!formChanged">{{alertText}}</ngb-alert>
+      <ngb-alert class="myalert" [type]="alertType" [dismissible]="false" *ngIf="!formChanged">{{alertText}}</ngb-alert>
       <form [formGroup]="editFormGroup" >
         <div class="form-group">
           <div class="d-flex">
@@ -141,7 +132,7 @@
       </form>
     </div>
     <div class="modal-footer px-4">
-      <button type="button" class="btn btn-outline-danger mr-auto" (click)="modal.close('Delete click')">Delete</button>
+      <button type="button" class="btn btn-outline-danger mr-auto" (click)="doDelete(modal)">Delete</button>
       <button type="button" class="btn btn-outline-dark" (click)="doUpdate(modal)">Update</button>
     </div>
   </ng-template>
