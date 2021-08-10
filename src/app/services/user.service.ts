@@ -22,6 +22,7 @@ export class UserService {
   }
 
   deleteUser(id: string) {
+    //
     return this.http.delete<any>(USER_API + `/${id}`)
   }
 
