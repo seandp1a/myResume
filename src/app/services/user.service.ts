@@ -1,4 +1,4 @@
-import { GET_USER_LIST, USER_API, LOGIN_API } from './apiName';
+import { USER_API} from './apiName';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -25,9 +25,9 @@ export class UserService {
     return this.http.delete<any>(USER_API + `/${id}`)
   }
 
-  loginUser(body: { email: string; password: string }) {
-    return this.http.post<LoginResponse>(LOGIN_API, body)
-  }
+
+
+
 
 }
 
@@ -43,15 +43,6 @@ export interface ResponseMsg {
   member_token?: string[];
 }
 
-export interface LoginResponse extends BackendResponseInfo{
-  data:{
-    id:number,
-    name:string,
-    email:string,
-    image:string,
-    member_token:string
-  }
-}
 
 export interface UserData {
   id: string,

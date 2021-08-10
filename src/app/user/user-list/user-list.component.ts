@@ -5,6 +5,7 @@ import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserModalComponent } from '../user-modal/user-modal.component';
+import { LoginService, LoginUser } from 'src/app/services/login.service';
 
 
 
@@ -35,6 +36,7 @@ export class UserListComponent implements OnInit {
   public currentPage = 1;
   public totalPage: number;
   public pageArr: number[] = [];
+  private loginUserInfo:LoginUser;
 
   // Modal相關
   public editFormGroup: FormGroup; // 更新表單控制
@@ -45,8 +47,13 @@ export class UserListComponent implements OnInit {
   constructor(
     private userSvc: UserService,
     private formBuilder: FormBuilder,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal,
+    private loginSvc:LoginService
+  ) {
+    loginSvc.getLoginUserData().subscribe((res)=>{
+      this.loginUserInfo = res;
+    })
+   }
 
 
   // API 取 user 資料
@@ -165,7 +172,8 @@ export class UserListComponent implements OnInit {
     this.formChanged = true;
     const editBody = {
       name: this.editFormGroup.value.name,
-      password: this.editFormGroup.value.password
+      password: this.editFormGroup.value.password,
+
     }
     this.userSvc.editUser(editBody, this.editFormGroup.controls['id'].value).subscribe((res) => {
       if (res.status !== true) {
