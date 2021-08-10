@@ -17,7 +17,7 @@ export class UserService {
     return this.http.post<BackendResponseInfo>(USER_API, body);
   }
 
-  editUser(body: { name: string, password: string, }, id: string) {
+  editUser(body: { name: string, image: string,member_token:string }, id: string) {
     return this.http.put<BackendResponseInfo>(USER_API + `/${id}`, body);
   }
 

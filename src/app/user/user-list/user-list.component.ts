@@ -43,6 +43,7 @@ export class UserListComponent implements OnInit {
   public formChanged = true;
   public alertText = '警告！您沒更改任何資料！';
   public alertType = 'warning';
+  public tempUserImage ='';
 
   constructor(
     private userSvc: UserService,
@@ -148,9 +149,10 @@ export class UserListComponent implements OnInit {
       id: [{ value: user.id, disabled: true }, Validators.required],
       email: [{ value: user.email, disabled: true }, [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      name: [user.name, [Validators.required, Validators.minLength(2)]]
+      name: [user.name, [Validators.required, Validators.minLength(2)]],
+      image:[user.image]
     });
-
+    this.tempUserImage = user.image;
   }
 
   private getDismissReason(reason: any): string {
@@ -170,10 +172,16 @@ export class UserListComponent implements OnInit {
       return;
     }
     this.formChanged = true;
+    // 檢查登入狀態
+    if(!this.loginSvc.isLogin()){
+      this.formChanged = false;
+      this.alertText ='尚未登入，無法修改資料';
+      return
+    }
     const editBody = {
       name: this.editFormGroup.value.name,
-      password: this.editFormGroup.value.password,
-
+      image: this.editFormGroup.value.image,
+      member_token:this.loginUserInfo.member_token
     }
     this.userSvc.editUser(editBody, this.editFormGroup.controls['id'].value).subscribe((res) => {
       if (res.status !== true) {
