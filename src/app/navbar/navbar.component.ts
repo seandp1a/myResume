@@ -1,3 +1,4 @@
+import { NavigationEnd, Router } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { fromEvent, Observable, Subscription } from 'rxjs';
@@ -6,6 +7,9 @@ import { fromEvent, Observable, Subscription } from 'rxjs';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
+  host: {
+    "(window:resize)": "onWindowResize($event)"
+  },
   animations: [
     trigger('smoothCollapse', [
       state('initial', style({
@@ -24,13 +28,24 @@ import { fromEvent, Observable, Subscription } from 'rxjs';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
-  public isCollapsed = true;
+  public pathName = '';
+  public isCollapsed = true; // 展開/收起 = T/F
+
+  constructor(private router:Router) {
+    router.events.subscribe((val)=>{
+      if(val instanceof NavigationEnd){
+        this.pathName = val.url.slice(1);
+      }
+    })
+   }
+
+
   ngOnInit(): void {
-    if (window.innerWidth < 992) {
-      this.isCollapsed = false;
-    }
-    console.log(window.innerWidth)
+
+  }
+  onWindowResize(event) {
+    this.isCollapsed = event.target.innerWidth < 992 ? false : true;
+
   }
 
 }

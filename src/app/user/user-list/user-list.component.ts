@@ -5,6 +5,8 @@ import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+
+
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -18,7 +20,7 @@ export class UserListComponent implements OnInit {
   private userListTemp: userData[];
 
   // 搜尋相關
-  public searchText: string;
+  public searchContent: userData | string;
   public searchType: string = '0';
   public searchTypeName: string;
   private searchTypeMap = {
@@ -50,7 +52,7 @@ export class UserListComponent implements OnInit {
   public getUserList() {
     this.userSvc.getUserList().subscribe((response) => {
       this.userList = response;
-      this.searchText === ""
+      this.searchContent === "";
       this.doSearch();
     })
   }
@@ -74,36 +76,46 @@ export class UserListComponent implements OnInit {
   // 執行篩選
   public doSearch() {
     // 無篩選的話，直接將總資料丟到userListTemp
-    this.searchTypeName = this.searchTypeMap[this.searchType]
-    if (this.searchText === "" || this.searchText === undefined) {
+
+    this.searchTypeName = this.searchTypeMap[this.searchType];
+
+    // 清空搜尋欄，初始化陣列
+    if (this.searchContent === "" || this.searchContent === undefined) {
       this.userListTemp = this.userList;
       this.resetPage();
       this.renderPage(1);
       return;
     }
+
     // 有篩選的話，先用temp存篩後結果，再丟到userListTemp
     let temp: userData[];
-    temp = this.userList.filter((user) => {
-      return user[this.searchTypeName].toString().toLowerCase().includes(this.searchText.toLowerCase());
-    })
+
+    // 當點了搜尋提示選項，ngmodel type 會變成物件，且篩選結果會變成只有一筆資料
+    if (typeof (this.searchContent) === 'object') {
+      const userId =this.searchContent.id;
+      temp = this.userList.filter((user)=>{
+        return user.id === userId;
+      })
+    }else{
+      temp = this.userList.filter((user) => {
+        return user[this.searchTypeName].toString().toLowerCase().includes(this.searchContent.toString().toLowerCase());
+      })
+    }
     this.userListTemp = temp;
     this.resetPage(); // 算頁數
     this.renderPage(1); // 算完渲染
   }
 
-  // 依當前searchType 建立對應的input文字提示陣列
-  private makeSearchArray(): string[] {
-    return this.userList.map(v => v[this.searchTypeName].toString())
-  }
+  // typeahead input/output 顯示轉型
+  formatter = (state: userData) => state[this.searchTypeName];
 
   // ng-typeahead 搜尋  readonly 後面放提示文字陣列
-  search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
+  search: OperatorFunction<string, readonly userData[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       filter(term => term.length >= 1),
-      map(term => this.makeSearchArray().filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)),
-
+      map(term => this.userList.filter(v => v[this.searchTypeName].toString().toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)),
     )
 
   // 初始化alert
