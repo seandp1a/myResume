@@ -10,14 +10,23 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class UserModalComponent implements OnInit {
   @Input() id;
   @Input() token;
+  @Input() loginId;
 
-  constructor(public activeModal: NgbActiveModal,private userSvc:UserService) { }
+  isSameId = false;
 
-  public doDelete(modal){
-    this.userSvc.deleteUser(this.id.toString(),this.token).subscribe((res)=>{
-      if(res.status){
+  constructor(public activeModal: NgbActiveModal, private userSvc: UserService) { }
+
+  public doDelete(modal) {
+
+
+    this.userSvc.deleteUser(this.id.toString(), this.token).subscribe((res) => {
+      if (res.status) {
+        if (this.id === this.loginId) {
+          modal.close('deleted_logout');
+          return;
+        }
         modal.close('deleted');
-      }else{
+      } else {
         console.log(res);
       }
     })
@@ -25,6 +34,7 @@ export class UserModalComponent implements OnInit {
   }
   ngOnInit(): void {
     console.log(this.id);
+    this.isSameId = this.id === this.loginId ? true : false;
   }
 
 }

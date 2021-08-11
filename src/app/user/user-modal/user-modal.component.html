@@ -6,6 +6,7 @@
 </div>
 <div class="modal-body">
   <ngb-alert [type]="'danger'" [dismissible]="false">此操作無法回復！</ngb-alert>
+  <ngb-alert [type]="'danger'" [dismissible]="false" *ngIf="isSameId">刪除自己帳號，系統將自動為您登出!</ngb-alert>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-danger mr-auto" (click)="doDelete(activeModal)">確定刪除</button>

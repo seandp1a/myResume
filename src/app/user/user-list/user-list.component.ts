@@ -139,6 +139,9 @@ export class UserListComponent implements OnInit {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'md' }).result.then((result) => {
       // 此處為modal 發生close事件 result為事件觸發原因
       console.log(`Modal close reason: ${result}`);
+      if(result ==='deleted_logout'){
+        this.loginSvc.logoutUser(this.loginUserInfo.member_token);
+      }
       this.resetAlert();
     }, (reason) => {
       // 此處為modal 發生dismiss事件 reason為事件觸發原因
@@ -213,11 +216,11 @@ export class UserListComponent implements OnInit {
     const modalRef = this.modalService.open(UserModalComponent, { size: 'md' });
     modalRef.componentInstance.id = this.editFormGroup.controls.id.value;
     modalRef.componentInstance.token = this.loginUserInfo.member_token;
+    modalRef.componentInstance.loginId = this.loginUserInfo.id;
+
     modalRef.result.then((result) => {
-      if(result==='deleted'){
-        this.getUserList();
-        modal.close('deleted');
-      }
+      modal.close(result);
+      this.getUserList();
     }, (reason) => {
       console.log('取消刪除');
     })

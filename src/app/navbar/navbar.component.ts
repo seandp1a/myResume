@@ -45,6 +45,8 @@ export class NavbarComponent implements OnInit {
         this.isLogin = true;
         this.userData = res;
         this.userName = res.name ? res.name : '';
+      }else{
+        this.isLogin = false;
       }
     })
     if (loginSvc.isLogin()) {
@@ -56,8 +58,7 @@ export class NavbarComponent implements OnInit {
   }
 
   doLogout() {
-    sessionStorage.clear();
-    this.loginSvc.loginUserInfo.next(null);
+    this.loginSvc.logoutUser(this.userData.member_token);
     this.isLogin = false;
   }
   ngOnInit(): void {

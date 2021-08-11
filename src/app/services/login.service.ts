@@ -1,8 +1,8 @@
-import { USER_API, LOGIN_API } from './apiName';
+import { USER_API, LOGIN_API, LOGOUT_API } from './apiName';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
-import { BackendResponseInfo, UserListResponse,UserData } from './user.service';
+import { BackendResponseInfo, UserListResponse, UserData } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class LoginService {
   }
 
 
-  public loginUserInfo = new ReplaySubject<LoginUser|null>(1);
+  public loginUserInfo = new ReplaySubject<LoginUser | null>(1);
 
   /**
    * 如果loginUserInfo(replaySubject)有值，回傳true
@@ -31,7 +31,7 @@ export class LoginService {
     if (sessionStorage.getItem('userData')) {
       const id = JSON.parse(sessionStorage.getItem('userData')).id;
       const token = JSON.parse(sessionStorage.getItem('userData')).member_token;
-      this.getLatestUserData(id,token);
+      this.getLatestUserData(id, token);
       return true;
     }
     return false;
@@ -39,12 +39,12 @@ export class LoginService {
 
   getLatestUserData(id: number, token: string) {
     this.http.get<LatestUserResponse>(USER_API + `/${id}`).subscribe((res: LatestUserResponse) => {
-      const temp  = {
-        id:res.data.id,
-        name:res.data.name,
-        email:res.data.email,
-        image:res.data.image,
-        member_token:token
+      const temp = {
+        id: res.data.id,
+        name: res.data.name,
+        email: res.data.email,
+        image: res.data.image,
+        member_token: token
       }
       this.loginUserInfo.next(temp);
     })
@@ -58,6 +58,12 @@ export class LoginService {
     return this.http.post<LoginResponse>(LOGIN_API, body);
   }
 
+  logoutUser(token: string) {
+    sessionStorage.clear();
+    this.loginUserInfo.next(null);
+    this.http.post(LOGOUT_API, { member_token: token });
+  }
+
 }
 
 export interface LoginUser {
@@ -68,8 +74,8 @@ export interface LoginUser {
   member_token: string
 }
 
-export interface LatestUserResponse extends BackendResponseInfo{
- data:UserData;
+export interface LatestUserResponse extends BackendResponseInfo {
+  data: UserData;
 }
 
 export interface LoginResponse extends BackendResponseInfo {
