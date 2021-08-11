@@ -197,6 +197,10 @@ export class UserListComponent implements OnInit {
       this.formChanged = false;
       this.alertType = 'success';
       this.alertText = '修改成功！';
+      if(this.editFormGroup.controls['id'].value===this.loginUserInfo.id){
+        console.log('更新id同當前id，故再要一次api');
+        this.loginSvc.getLatestUserData(this.loginUserInfo.id,this.loginUserInfo.member_token);
+      }
       setTimeout(() => {
         modal.close('Update')
         this.getUserList();

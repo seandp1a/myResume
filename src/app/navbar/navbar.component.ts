@@ -41,7 +41,6 @@ export class NavbarComponent implements OnInit {
       }
     })
     loginSvc.loginUserInfo.subscribe((res)=>{
-      console.log('activated');
       if(res!==null){
         this.isLogin = true;
         this.userData = res;
