@@ -9,11 +9,12 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class UserModalComponent implements OnInit {
   @Input() id;
+  @Input() token;
 
   constructor(public activeModal: NgbActiveModal,private userSvc:UserService) { }
 
   public doDelete(modal){
-    this.userSvc.deleteUser(this.id.toString()).subscribe((res)=>{
+    this.userSvc.deleteUser(this.id.toString(),this.token).subscribe((res)=>{
       console.log(res)
     })
     modal.close();

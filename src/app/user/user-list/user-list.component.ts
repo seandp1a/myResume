@@ -60,7 +60,7 @@ export class UserListComponent implements OnInit {
   // API 取 user 資料
   public getUserList() {
     this.userSvc.getUserList().subscribe((response) => {
-      this.userList = response;
+      this.userList = response.data;
       this.searchContent === "";
       this.doSearch();
     })
@@ -208,6 +208,7 @@ export class UserListComponent implements OnInit {
   public doDelete(modal) {
     const modalRef = this.modalService.open(UserModalComponent, { size: 'md' });
     modalRef.componentInstance.id = this.editFormGroup.controls.id.value;
+    modalRef.componentInstance.token = this.loginUserInfo.member_token;
     modalRef.result.then((result) => {
       modal.close();
     }, (reason) => {

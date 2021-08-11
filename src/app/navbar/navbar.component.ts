@@ -1,7 +1,6 @@
 import { NavigationEnd, Router } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { fromEvent, Observable, Subscription } from 'rxjs';
 import { LoginService, LoginUser } from '../services/login.service';
 
 @Component({
@@ -41,20 +40,29 @@ export class NavbarComponent implements OnInit {
         this.pathName = val.url.slice(1);
       }
     })
-    this.loginSvc.getLoginUserData().subscribe((res)=>{
-      this.userData = res;
-      this.userName = res.name;
-      this.isLogin = true;
+    loginSvc.loginUserInfo.subscribe((res)=>{
+      console.log('activated');
+      if(res!==null){
+        this.isLogin = true;
+        this.userData = res;
+        this.userName = res.name ? res.name : '';
+      }
     })
+    if (loginSvc.isLogin()) {
+      this.isLogin = true;
+    } else {
+      this.isLogin = false;
+    }
+
   }
 
-  doLogout(){
+  doLogout() {
     sessionStorage.clear();
-    this.loginSvc.loginUserInfo.next();
+    this.loginSvc.loginUserInfo.next(null);
     this.isLogin = false;
   }
   ngOnInit(): void {
-
+    this.isLogin = this.loginSvc.isLogin();
   }
   onWindowResize(event) {
     this.isCollapsed = event.target.innerWidth < 992 ? false : true;

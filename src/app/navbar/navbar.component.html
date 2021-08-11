@@ -24,7 +24,7 @@
       </ul>
     </div>
     <div class="ml-auto text-white" *ngIf="isLogin">
-     你好，{{userName}}
+     你好，{{userName?userName:''}}
     </div>
   </div>
 </nav>

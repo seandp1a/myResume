@@ -21,9 +21,9 @@ export class LoginComponent implements OnInit {
   public doLogin() {
     this.loginSvc.loginUser({ email: this.email, password: this.password }).subscribe((res: LoginResponse) => {
       if (res.status === true) {
-        this.isSuccess = true;
-        this.loginSvc.loginUserInfo.next(res.data);
-        sessionStorage.setItem('userData',JSON.stringify(res.data));
+        this.isSuccess = true; // alert提醒
+        this.loginSvc.loginUserInfo.next(res.data); // 更新登入資料
+        sessionStorage.setItem('userData', JSON.stringify({ id: res.data.id, member_token: res.data.member_token }));
         setTimeout(() => {
           this.route.navigate(['/userList']);
         }, 1500);
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     })
   }
   ngOnInit(): void {
-    if(this.loginSvc.isLogin()){
+    if (this.loginSvc.isLogin()) {
       this.route.navigate(['/userList']);
     }
   }
