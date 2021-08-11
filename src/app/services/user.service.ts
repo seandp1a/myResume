@@ -24,7 +24,7 @@ export class UserService {
   deleteUser(id: string, token: string) {
     let headers = new HttpHeaders();
     headers.append('Authorization', `Bearer ${token}`);
-    return this.http.request('delete', USER_API + `/${id}`, { body:{ member_token: token }, headers: headers });
+    return this.http.request<BackendResponseInfo>('delete', USER_API + `/${id}`, { body:{ member_token: token }, headers: headers });
   }
 
 

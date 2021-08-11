@@ -15,9 +15,13 @@ export class UserModalComponent implements OnInit {
 
   public doDelete(modal){
     this.userSvc.deleteUser(this.id.toString(),this.token).subscribe((res)=>{
-      console.log(res)
+      if(res.status){
+        modal.close('deleted');
+      }else{
+        console.log(res);
+      }
     })
-    modal.close();
+
   }
   ngOnInit(): void {
     console.log(this.id);

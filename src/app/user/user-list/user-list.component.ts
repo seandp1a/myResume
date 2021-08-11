@@ -138,7 +138,7 @@ export class UserListComponent implements OnInit {
   open(content, user: UserData) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'md' }).result.then((result) => {
       // 此處為modal 發生close事件 result為事件觸發原因
-      console.log(`Closed with: ${result}`);
+      console.log(`Modal close reason: ${result}`);
       this.resetAlert();
     }, (reason) => {
       // 此處為modal 發生dismiss事件 reason為事件觸發原因
@@ -214,7 +214,10 @@ export class UserListComponent implements OnInit {
     modalRef.componentInstance.id = this.editFormGroup.controls.id.value;
     modalRef.componentInstance.token = this.loginUserInfo.member_token;
     modalRef.result.then((result) => {
-      modal.close();
+      if(result==='deleted'){
+        this.getUserList();
+        modal.close('deleted');
+      }
     }, (reason) => {
       console.log('取消刪除');
     })
