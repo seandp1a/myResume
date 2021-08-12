@@ -2,14 +2,6 @@
 <form [formGroup]="insertFormGroup" novalidate class="w-50 mx-auto">
   <div class="alert alert-success fade mb-0" [class]="{show:successAlert}">新增成功</div>
 
-  <div class="form-group">
-    <label for="">Photo</label>
-    <div class="avatar">
-      <input type="file" accept="image/*" class="fileInput"
-        (change)="onFileChange($event)">
-      <img [src]="imgFile" *ngIf="imgFile">
-    </div>
-  </div>
 
   <div class="form-group">
     <label for="">Email</label>

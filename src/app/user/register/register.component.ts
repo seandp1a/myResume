@@ -99,21 +99,7 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  public onFileChange(event) {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = (event.target as HTMLInputElement).files[0];
-      this.insertFormGroup.patchValue({
-        uploadedFile: file
-      });
-      this.insertFormGroup.get('uploadedFile').updateValueAndValidity();
-      console.log(file);
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imgFile = reader.result as string;
-      }
-      reader.readAsDataURL(file);
-    }
-  }
+
 
   ngOnInit(): void {
     this.insertFormGroup = this.formBuilder.group({
