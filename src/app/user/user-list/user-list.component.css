@@ -50,3 +50,8 @@
   z-index: 2;
   cursor: pointer;
 }
+@media screen and (max-width:400px) {
+  .avatar{
+    height: 200px;
+  }
+}

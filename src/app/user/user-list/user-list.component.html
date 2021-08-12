@@ -102,14 +102,12 @@
       <form [formGroup]="editFormGroup" >
         <div class="form-group">
           <div class="d-flex">
-            <div class="avatar col-5"  [ngStyle]="{backgroundImage:imgFile?'none':'url('+ tempUserImage+')'}">
+            <div class="avatar col-6 col-md-5 "  [ngStyle]="{backgroundImage:imgFile?'none':'url('+ tempUserImage+')'}">
               <input type="file" accept="image/*" class="fileInput" (change)="onFileChange($event)">
               <img [src]="imgFile" *ngIf="imgFile">
             </div>
-            <div class="">
-              <!-- <img [src]="tempUserImage" alt="" width="100%" class="userPhoto"> -->
-            </div>
-            <div class="col-7">
+
+            <div class="col-6 col-md-7">
               <label for="userId" >User Id</label>
               <input id="userId"  formControlName="id" class="form-control" >
               <label for="userName" >User Name</label>

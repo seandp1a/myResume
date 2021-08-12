@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
     <a class="navbar-brand" routerLink="/">Usong</a>
+    <div class="d-block d-lg-none text-white" *ngIf="isLogin">
+      你好，{{userName?userName:''}}
+     </div>
     <button class="navbar-toggler collapsed" type="button" (click)="isCollapsed = !isCollapsed">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -23,7 +26,7 @@
         </li>
       </ul>
     </div>
-    <div class="ml-auto text-white" *ngIf="isLogin">
+    <div class="ml-auto text-white d-none d-lg-block" *ngIf="isLogin">
      你好，{{userName?userName:''}}
     </div>
   </div>
