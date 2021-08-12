@@ -28,6 +28,7 @@ export class RegisterComponent implements OnInit {
       message: ''
     }
   };
+  public imgFile: string;
 
   get name() { return this.insertFormGroup.get('name'); }
   get email() { return this.insertFormGroup.get('email'); }
@@ -40,7 +41,7 @@ export class RegisterComponent implements OnInit {
   }
 
 
-  private initErrMsg(){
+  private initErrMsg() {
     this.errorMsg = {
       email: {
         status: true,
@@ -59,11 +60,11 @@ export class RegisterComponent implements OnInit {
   private createErrorMsg(res?: BackendResponseInfo): void {
     console.log(res);
     for (let i of ['email', 'name', 'password']) {
-      if(res.message[i]){
-        this.errorMsg[i].message= res.message[i]
-        this.errorMsg[i].status =false;
-      }else{
-        this.errorMsg[i].status =true;
+      if (res.message[i]) {
+        this.errorMsg[i].message = res.message[i]
+        this.errorMsg[i].status = false;
+      } else {
+        this.errorMsg[i].status = true;
       }
     }
     console.log(this.errorMsg);
@@ -79,9 +80,11 @@ export class RegisterComponent implements OnInit {
       email: this.insertFormGroup.value.email || '',
       password: this.insertFormGroup.value.password || ''
     }
-    if(this.insertFormGroup.invalid){
+    if (this.insertFormGroup.invalid) {
       return;
     }
+
+
     this.userSvc.insertUser(body).subscribe((res: BackendResponseInfo) => {
       console.log(res)
       if (res.code === 200) {
@@ -96,13 +99,28 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-
+  public onFileChange(event) {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = (event.target as HTMLInputElement).files[0];
+      this.insertFormGroup.patchValue({
+        uploadedFile: file
+      });
+      this.insertFormGroup.get('uploadedFile').updateValueAndValidity();
+      console.log(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imgFile = reader.result as string;
+      }
+      reader.readAsDataURL(file);
+    }
+  }
 
   ngOnInit(): void {
     this.insertFormGroup = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern(REGEX_EMAIL)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      name: ['', [Validators.required, Validators.minLength(2)]]
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      uploadedFile: [null]
     });
 
   }

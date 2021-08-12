@@ -13,17 +13,40 @@
   color: white;
   cursor:default !important;
 }
+.avatar{
+  width: 200px;
+  height: 250px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: multiply;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  transition: .5s;
+  position: relative;
+}
+.avatar:hover{
+  background-color: #dadb8441;
+  background-blend-mode: multiply;
+  border: 1px solid #dadb84;
+}
+.avatar img{
+  width: 198px;
+  height: 248px;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 15px;
+}
 
- /* .modal.show .modal-dialog {
-      transition: 0.25s all;
-      opacity: 0;
-      transform: translate(0, 5vh);
-  }
-
- .modal.custom-show .modal-dialog {
-      opacity: 1;
-      transform: translate(0, 0);
-  } */
-
-  /* modal animation */
-
+.fileInput{
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  cursor: pointer;
+}

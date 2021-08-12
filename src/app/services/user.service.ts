@@ -1,4 +1,4 @@
-import { USER_API } from './apiName';
+import { USER_API, IMG_API } from './apiName';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -24,10 +24,12 @@ export class UserService {
   deleteUser(id: string, token: string) {
     let headers = new HttpHeaders();
     headers.append('Authorization', `Bearer ${token}`);
-    return this.http.request<BackendResponseInfo>('delete', USER_API + `/${id}`, { body:{ member_token: token }, headers: headers });
+    return this.http.request<BackendResponseInfo>('delete', USER_API + `/${id}`, { body: { member_token: token }, headers: headers });
   }
 
-
+  async uploadImg(body: FormData) {
+    return await this.http.post<UploadImgResponse>(IMG_API, body).toPromise();
+  }
 
 
 
@@ -45,8 +47,8 @@ export interface ResponseMsg {
   member_token?: string[];
 }
 
-export interface UserListResponse extends BackendResponseInfo{
- data:UserData[]
+export interface UserListResponse extends BackendResponseInfo {
+  data: UserData[]
 }
 
 export interface UserData {
@@ -58,4 +60,9 @@ export interface UserData {
   image: string
 }
 
-
+export interface UploadImgResponse {
+  height: number,
+  status: boolean,
+  url: string,
+  width: number
+}

@@ -1,11 +1,20 @@
 <h1 class="text-center mt-4"> 新增USER </h1>
 <form [formGroup]="insertFormGroup" novalidate class="w-50 mx-auto">
-<div class="alert alert-success fade mb-0" [class]="{show:successAlert}">新增成功</div>
+  <div class="alert alert-success fade mb-0" [class]="{show:successAlert}">新增成功</div>
+
+  <div class="form-group">
+    <label for="">Photo</label>
+    <div class="avatar">
+      <input type="file" accept="image/*" class="fileInput"
+        (change)="onFileChange($event)">
+      <img [src]="imgFile" *ngIf="imgFile">
+    </div>
+  </div>
 
   <div class="form-group">
     <label for="">Email</label>
-    <input class="form-control" type="email" name="email" id="email"  formControlName="email">
-    <div class="text-danger font-weight-bold " style="font-size: .8rem;" *ngIf="isValid('email')" >
+    <input class="form-control" type="email" name="email" id="email" formControlName="email">
+    <div class="text-danger font-weight-bold " style="font-size: .8rem;" *ngIf="isValid('email')">
       <div *ngIf="email.errors?.required">＊＊沒輸入，是在哭?＊＊</div>
       <div *ngIf="!errorMsg.email.status">＊＊{{errorMsg.email.message}}＊＊</div>
     </div>
@@ -13,7 +22,7 @@
   <div class="form-group">
     <label for="">Password</label>
     <input class="form-control" type="password" name="password" id="password" formControlName="password">
-    <div class="text-danger font-weight-bold " style="font-size: .8rem;" *ngIf="isValid('password')" >
+    <div class="text-danger font-weight-bold " style="font-size: .8rem;" *ngIf="isValid('password')">
       <div *ngIf="password.errors?.required">＊＊沒輸入，是在哭?＊＊</div>
       <div *ngIf="!errorMsg.password.status">＊＊{{errorMsg.password.message}}＊＊</div>
     </div>
@@ -21,7 +30,7 @@
   <div class="form-group">
     <label for="">Name</label>
     <input class="form-control" type="text" name="name" id="name" formControlName="name">
-    <div class="text-danger font-weight-bold " style="font-size: .8rem;" *ngIf="isValid('name')" >
+    <div class="text-danger font-weight-bold " style="font-size: .8rem;" *ngIf="isValid('name')">
       <div *ngIf="name.errors?.required">＊＊沒輸入，是在哭?＊＊</div>
       <div *ngIf="!errorMsg.name.status">＊＊{{errorMsg.name.message}}＊＊</div>
     </div>

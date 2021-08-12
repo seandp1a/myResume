@@ -1,3 +1,4 @@
+import { async } from '@angular/core/testing';
 import { UserData, UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,6 +16,7 @@ import { LoginService, LoginUser } from 'src/app/services/login.service';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
+
 
   // 資料相關
   private userList: UserData[];
@@ -36,25 +38,26 @@ export class UserListComponent implements OnInit {
   public currentPage = 1;
   public totalPage: number;
   public pageArr: number[] = [];
-  private loginUserInfo:LoginUser;
+  private loginUserInfo: LoginUser;
 
   // Modal相關
   public editFormGroup: FormGroup; // 更新表單控制
   public formChanged = true;
   public alertText = '警告！您沒更改任何資料！';
   public alertType = 'warning';
-  public tempUserImage ='';
+  public tempUserImage = '';
+  public imgFile: string;
 
   constructor(
     private userSvc: UserService,
     private formBuilder: FormBuilder,
     private modalService: NgbModal,
-    private loginSvc:LoginService
+    private loginSvc: LoginService
   ) {
-    loginSvc.getLoginUserData().subscribe((res)=>{
+    loginSvc.getLoginUserData().subscribe((res) => {
       this.loginUserInfo = res;
     })
-   }
+  }
 
 
   // API 取 user 資料
@@ -139,23 +142,42 @@ export class UserListComponent implements OnInit {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'md' }).result.then((result) => {
       // 此處為modal 發生close事件 result為事件觸發原因
       console.log(`Modal close reason: ${result}`);
-      if(result ==='deleted_logout'){
+      if (result === 'deleted_logout') {
         this.loginSvc.logoutUser(this.loginUserInfo.member_token);
       }
       this.resetAlert();
+      this.imgFile = null;
     }, (reason) => {
       // 此處為modal 發生dismiss事件 reason為事件觸發原因
       console.log(`Dismissed ${this.getDismissReason(reason)}`);
       this.resetAlert();
+      this.imgFile = null;
     });
     this.editFormGroup = this.formBuilder.group({
       id: [{ value: user.id, disabled: true }, Validators.required],
       email: [{ value: user.email, disabled: true }, [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       name: [user.name, [Validators.required, Validators.minLength(2)]],
-      image:[user.image]
+      image: [user.image],
+      uploadedFile: [null]
     });
     this.tempUserImage = user.image;
+  }
+
+  public onFileChange(event) {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = (event.target as HTMLInputElement).files[0];
+      this.editFormGroup.patchValue({
+        uploadedFile: file
+      });
+      this.editFormGroup.get('uploadedFile').updateValueAndValidity();
+      this.editFormGroup.controls.uploadedFile.markAsDirty();
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imgFile = reader.result as string;
+      }
+      reader.readAsDataURL(file);
+    }
   }
 
   private getDismissReason(reason: any): string {
@@ -168,23 +190,36 @@ export class UserListComponent implements OnInit {
     }
   }
 
-  public doUpdate(modal) {
+  public async doUpdate(modal) {
     // input都沒碰過跳alert
-    if (!this.editFormGroup.dirty) {
+    if (!this.editFormGroup.dirty && !this.editFormGroup.controls.uploadedFile.dirty) {
       this.formChanged = false;
       return;
     }
     this.formChanged = true;
     // 檢查登入狀態
-    if(!this.loginSvc.isLogin()){
+    if (!this.loginSvc.isLogin()) {
       this.formChanged = false;
-      this.alertText ='尚未登入，無法修改資料';
+      this.alertText = '尚未登入，無法修改資料';
       return
+    }
+    // 若有更新圖片 先上傳圖片 把回傳的url塞在form裡面
+    if (this.editFormGroup.controls.uploadedFile.value) {
+      const formData = new FormData();
+      formData.append('uploadedFile', this.editFormGroup.value.uploadedFile);
+      await this.userSvc.uploadImg(formData).then((res) => {
+        const temp = 'https://roy.usongrat.tw/';
+        const index = res.url.search(/storage/i);
+        this.editFormGroup.patchValue({
+          image: temp + res.url.slice(index)
+        });
+      })
+
     }
     const editBody = {
       name: this.editFormGroup.value.name,
       image: this.editFormGroup.value.image,
-      member_token:this.loginUserInfo.member_token
+      member_token: this.loginUserInfo.member_token
     }
     this.userSvc.editUser(editBody, this.editFormGroup.controls['id'].value).subscribe((res) => {
       if (res.status !== true) {
@@ -200,9 +235,9 @@ export class UserListComponent implements OnInit {
       this.formChanged = false;
       this.alertType = 'success';
       this.alertText = '修改成功！';
-      if(this.editFormGroup.controls['id'].value===this.loginUserInfo.id){
+      if (this.editFormGroup.controls['id'].value === this.loginUserInfo.id) {
         console.log('更新id同當前id，故再要一次api');
-        this.loginSvc.getLatestUserData(this.loginUserInfo.id,this.loginUserInfo.member_token);
+        this.loginSvc.getLatestUserData(this.loginUserInfo.id, this.loginUserInfo.member_token);
       }
       setTimeout(() => {
         modal.close('Update')
