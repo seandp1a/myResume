@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" [@smoothCollapse]="isScrollUp?'final':'initial'">
   <div class="container">
     <a class="navbar-brand" routerLink="/">Usong</a>
     <div class="d-block d-lg-none text-white" *ngIf="isLogin">
@@ -7,7 +7,7 @@
     <button class="navbar-toggler collapsed" type="button" (click)="isCollapsed = !isCollapsed">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div [@smoothCollapse]="isCollapsed?'final':'initial'" class=" navbar-collapse">
+    <div [@smoothCollapse]="isCollapsed?'final':'initial'" class=" navbar-collapse ">
       <ul class="navbar-nav">
         <li class="nav-item" [ngClass]="{active:pathName===''}">
           <a class="nav-link" routerLink="/">Home</a>

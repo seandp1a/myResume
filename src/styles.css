@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 body{
-  background: linear-gradient(to right, rgb(44, 62, 80), rgb(52, 152, 219)) !important;
+  /* background-color: rgb(230, 230, 230); */
 }
 
 /* input下拉提示選單 */
@@ -97,6 +97,7 @@ ngb-carousel img {
   width: 100vw;
   outline: none;
   max-width: 100%;
+  max-height: 100vh;
 }
 
 ngb-carousel {

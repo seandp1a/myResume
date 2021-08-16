@@ -1,6 +1,6 @@
 import { NavigationEnd, Router } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { LoginService, LoginUser } from '../services/login.service';
 
 @Component({
@@ -33,6 +33,22 @@ export class NavbarComponent implements OnInit {
   public isLogin: boolean;
   public userName: string;
   private userData: LoginUser;
+  private windowY = 0;
+  public isScrollUp = true;
+
+  @HostListener('window:scroll', ['$event'])
+
+  onWindowScroll() {
+    let element = document.querySelector('.navbar') as HTMLElement;
+    if (window.pageYOffset > this.windowY) {
+      element.classList.add('nav-hide');
+      this.isScrollUp = false;
+    } else {
+      element.classList.remove('nav-hide');
+      this.isScrollUp = true;
+    }
+    this.windowY = window.pageYOffset;
+  }
 
   constructor(private router: Router, private loginSvc: LoginService) {
     router.events.subscribe((val) => {
@@ -40,12 +56,12 @@ export class NavbarComponent implements OnInit {
         this.pathName = val.url.slice(1);
       }
     })
-    loginSvc.loginUserInfo.subscribe((res)=>{
-      if(res!==null){
+    loginSvc.loginUserInfo.subscribe((res) => {
+      if (res !== null) {
         this.isLogin = true;
         this.userData = res;
         this.userName = res.name ? res.name : '';
-      }else{
+      } else {
         this.isLogin = false;
       }
     })
