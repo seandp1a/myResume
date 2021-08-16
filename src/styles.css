@@ -1,8 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+  background: linear-gradient(to right, rgb(44, 62, 80), rgb(52, 152, 219)) !important;
+}
+
+/* input下拉提示選單 */
 .dropdown-item.active, .dropdown-item:active {
   background-color: rgb(56, 56, 56) !important;
 }
-
+/* modal動畫 */
 .modal-content{
   animation-name: modal;
   animation-duration: 0.5s;
@@ -80,4 +85,51 @@ ngb-alert.myalert {
     opacity: 1;
   }
 
+}
+
+/* carousel */
+ngb-carousel {
+  max-width: 100%;
+  margin: 50px auto;
+}
+
+ngb-carousel img {
+  width: 100vw;
+  outline: none;
+  max-width: 100%;
+}
+
+ngb-carousel {
+  width: inherit;
+  height: inherit;
+}
+
+.carousel-inner {
+  overflow: visible;
+}
+
+.carousel-item {
+  display: flex !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.2s ease-in-out, visibility 1.2s;
+  z-index: -1;
+}
+
+.carousel-item.active{
+  opacity: 1;
+  visibility: visible;
+  z-index: 10;
+}
+
+.carousel-control-prev {
+   z-index: 20;
+}
+
+.carousel-control-next {
+   z-index: 20;
+}
+
+.carousel-indicators{
+  z-index: 20;
 }
