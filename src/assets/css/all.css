@@ -4,14 +4,21 @@
 }
 .mybanner{
   background: linear-gradient(to right, rgb(44, 62, 80), rgb(52, 152, 219)) !important;
-  height: 90vh;
-  padding: 15rem;
+  height: 80vh;
+  padding: 12.5rem;
+  margin: 0;
 }
 
 .article-list{
   margin: 3rem 0 4rem;
 }
 
+.article-card{
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 2px 2px 3.5px 0px rgb(0 0 0 / 57%);
+
+}
 
 .article-img {
   width: 100%;
@@ -26,6 +33,7 @@
   font-size: 3rem;
   text-align: center ;
 }
+
 .article-content{
   overflow: hidden;
   text-overflow: ellipsis;
@@ -33,8 +41,11 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   margin: .5rem 0;
+  padding: 0 2rem;
+
 }
 .article-footer{
+  padding: .5rem 2rem;
   text-align: right;
   font-style: italic;
 }
