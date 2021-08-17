@@ -133,6 +133,7 @@ button {
 }
 
 .content-page {
+  margin-top: 55px;
   padding-top: 30px;
   padding-bottom: 60px;
   border-top: 1px dashed #dedede;
@@ -417,10 +418,10 @@ div.portfolio {
 }
 
 .table > tbody > tr > td {
-  padding: 15px;
+  padding: 13px;
   line-height: 25px;
   letter-spacing: 0.6px;
-  border: 1px solid #e4e4e4;
+  /* border: 1px solid #e4e4e4; */
 }
 
 .table tr > td {
@@ -432,11 +433,11 @@ tr:nth-child(1) > td {
 }
 
 tr > td:nth-child(1){
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   font-weight: 500;
   font-size: 13px;
-  color: #888888;
-  width: 140px;
+  /* color: #888888; */
+  /* width: 140px; */
 }
 
 tr > td:nth-child(2) {
@@ -889,10 +890,10 @@ blockquote {
 
 .load-more-button {
   width: 90px;
-  height: 90px;
-  border-radius: 50%;
+  height: 45px;
+  /* border-radius: 50%; */
   border: 2px dashed #1abc9c;
-  line-height: 90px;
+  line-height: 45px;
   display: block;
   font-size: 16px;
   letter-spacing: 1.5px;
