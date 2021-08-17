@@ -1,68 +1,48 @@
 <div class="page-header">
   <div class="jumbotron jumbotron-fluid mybanner">
-    <div class="container d-flex flex-column  text-white ">
-      <span>welcome dear</span>
-      <h1 class="display-1-lg font-weight-bold my-4 text-md-center ">Usongrat  Style</h1>
-      <p class="lead text-right ">This blog is produced by Usong(Front-end) and Roy(Back-end).</p>
+    <div class="container d-flex flex-column  text-white  abs-center">
+      <span class="pl-md-5">welcome dear, rays shoo shoo kai-door</span>
+      <h1 class="display-1-lg font-weight-bold my-4 text-md-center ">Usongrat G-tray-rays</h1>
+      <p class="lead text-md-right pr-md-5">This blog is produced by Usong(Front-end) and Roy(Back-end).</p>
     </div>
   </div>
 </div>
 <div class="container">
   <div class="d-flex flex-wrap">
-    <div class="col-12 col-md-4"></div>
-    <div class="col-12 col-md-8 d-flex flex-column article-list">
-      <div class=" blog-post" style="display: block;">
-        <div class="post-title">
-          <a href="single.html"><h1>How to design elegant e-mail newsletter in html for wish christmas to your subscribers?</h1></a>
-        </div>
-        <div class="post-info">
-          <span>November 23, 2016 / by <a href="#" target="_blank">Alex Parker</a></span>
-        </div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ut ratione similique temporibus tempora dicta soluta? Qui hic, voluptatem nemo quo corporis dignissimos voluptatum debitis cumque fugiat mollitia quasi quod. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ut ratione similique.</p>
-        <a href="single.html" class="button button-style button-anim fa fa-long-arrow-right"><span>Read More</span></a>
+
+    <div class="col-12 col-md-4 px-4">
+      <!--  -->
+      <ngb-carousel #carousel [interval]="3000" [pauseOnHover]="true">
+        <ng-template ngbSlide *ngFor="let dev of developers; index as i">
+
+          <div class="d-flex flex-column w-100">
+            <div class="my-pic ">
+              <div class="my-photo" [style]="{backgroundImage:'url('+dev.photo+')'}"></div>
+            </div>
+
+            <div class="my-detail ">
+              <div class="white-spacing">
+                <h1>{{dev.name}}</h1>
+                <span>{{dev.major}}</span>
+              </div>
+
+              <ul class="social-icon">
+                <li><a [href]="dev.fb" target="_blank" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                <li><a [href]="dev.ig" target="_blank" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                <li><a [href]="dev.gh" target="_blank" class="github"><i class="fa fa-github"></i></a></li>
+              </ul>
+
+            </div>
+          </div>
+
+        </ng-template>
+      </ngb-carousel>
+      <!--  -->
     </div>
-      <div class="article-card my-4">
-        <div class="article-img"
-          style="background-image: url(https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/78bb4283988751.5e1d9fd8ed174.jpg);">
 
-        </div>
-        <h1 class="article-title">title</h1>
-        <p class="article-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet placeat quia ipsam
-          culpa molestias, omnis sint
-          a, necessitatibus doloribus perferendis error nihil ut autem impedit beatae amet deserunt aliquid veniam?Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Repudiandae pariatur modi necessitatibus non, a vel, repellat
-          corrupti id velit delectus tempore impedit sequi accusamus aliquid fuga. Eaque facere aliquam corrupti. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Rem officia sunt, eligendi voluptates sequi exercitationem,
-          perferendis molestias, recusandae earum in consectetur ducimus hic labore quos sit laborum impedit eaque
-          adipisci.</p>
+    <div class="col-12 col-md-8 d-flex flex-column article-list">
+      <app-article [article]="article" *ngFor="let article of articleToDisplay"></app-article>
 
-      </div>
-
-      <div class="article-card my-4">
-        <div class="article-img"
-          style="background-image: url(https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/78bb4283988751.5e1d9fd8ed174.jpg);">
-
-        </div>
-        <h1 class="article-title">title</h1>
-        <p class="article-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet placeat quia ipsam
-          culpa molestias, omnis sint
-          a, necessitatibus doloribus perferendis error nihil ut autem impedit beatae amet deserunt aliquid veniam?Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Repudiandae pariatur modi necessitatibus non, a vel, repellat
-          corrupti id velit delectus tempore impedit sequi accusamus aliquid fuga. Eaque facere aliquam corrupti. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Rem officia sunt, eligendi voluptates sequi exercitationem,
-          perferendis molestias, recusandae earum in consectetur ducimus hic labore quos sit laborum impedit eaque
-          adipisci.</p>
-        <hr class="my-0">
-        <div class="article-footer">post by 冠農</div>
-
-      </div>
-      <h1 class="text-center">Home</h1>
-      <h4 class=" text-center">留個言吧</h4>
-      <textarea name="myTextArea" id="myTextArea" cols="30" rows="10" class="form-group mx-auto w-100"
-        [(ngModel)]="inputText"></textarea>
-
-      <span class="text-danger mx-auto " style="font-weight: bold;" *ngIf="showWarn">你沒輸入東西送三小?</span>
-      <button class="mx-auto btn btn-primary mt-2" style="width: 5rem;" (click)="send()">送出</button>
     </div>
   </div>
 

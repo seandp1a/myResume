@@ -29,12 +29,14 @@ import { LoginService, LoginUser } from '../services/login.service';
 export class NavbarComponent implements OnInit {
 
   public pathName = '';
+  private isMobile = true;
   public isCollapsed = true; // 展開/收起 = T/F
   public isLogin: boolean;
   public userName: string;
   private userData: LoginUser;
   private windowY = 0;
   public isScrollUp = true;
+  public navColor = false;
 
   @HostListener('window:scroll', ['$event'])
 
@@ -48,6 +50,28 @@ export class NavbarComponent implements OnInit {
       this.isScrollUp = true;
     }
     this.windowY = window.pageYOffset;
+    // if (this.isMobile) {
+    //   if (this.windowY >= 470 && this.pathName === '') {
+    //     this.navColor = true;
+    //   } else {
+    //     this.navColor = false;
+    //   }
+    // } else {
+    //   if (this.windowY >= 836 && this.pathName === '') {
+    //     this.navColor = true;
+    //   } else {
+    //     this.navColor = false;
+    //   }
+    // }
+    if (!this.isMobile && this.windowY >= 836 && this.pathName === '') {
+      this.navColor = true;
+    } else if (this.isMobile && this.windowY >= 470 && this.pathName === '') {
+      this.navColor = true;
+    } else {
+      this.navColor = false;
+    }
+
+
   }
 
   constructor(private router: Router, private loginSvc: LoginService) {
@@ -79,10 +103,12 @@ export class NavbarComponent implements OnInit {
   }
   ngOnInit(): void {
     this.isLogin = this.loginSvc.isLogin();
+    this.isMobile = window.innerWidth < 992 ? true : false;
+    this.isCollapsed = window.innerWidth < 992 ? false : true;
   }
   onWindowResize(event) {
     this.isCollapsed = event.target.innerWidth < 992 ? false : true;
-
+    this.isMobile = event.target.innerWidth < 992 ? true : false;
   }
 
 }

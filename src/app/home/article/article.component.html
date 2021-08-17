@@ -1,1 +1,12 @@
-<p>article works!</p>
+<div class=" blog-post" style="display: block;">
+  <div class="post-title">
+    <a href="single.html">
+      <h1>{{article.title}}</h1>
+    </a>
+  </div>
+  <div class="post-info">
+    <span>{{article.updated_at}} / by <a href="#" target="_blank">{{article.user_name}}</a></span>
+  </div>
+  <p>{{contentPreview}}</p>
+  <a routerLink="/#" class="button button-style button-anim fa fa-long-arrow-right"><span>Read More</span></a>
+</div>
