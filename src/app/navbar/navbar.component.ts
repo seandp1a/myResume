@@ -1,4 +1,4 @@
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { LoginService, LoginUser } from '../services/login.service';
@@ -28,7 +28,7 @@ import { LoginService, LoginUser } from '../services/login.service';
 })
 export class NavbarComponent implements OnInit {
 
-  public pathName = '';
+  public pathName = 'home/page/1';
   private isMobile = true;
   public isCollapsed = true; // 展開/收起 = T/F
   public isLogin: boolean;
@@ -62,10 +62,10 @@ export class NavbarComponent implements OnInit {
 
   }
 
-  constructor(private router: Router, private loginSvc: LoginService) {
+  constructor(private router: Router, private loginSvc: LoginService,private activatedRoute: ActivatedRoute) {
     router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
-        this.pathName = val.url.slice(1);
+        this.pathName = val.url.slice(1)?val.url.slice(1):'home/page/1';
       }
     })
     loginSvc.loginUserInfo.subscribe((res) => {
@@ -93,6 +93,8 @@ export class NavbarComponent implements OnInit {
     this.isLogin = this.loginSvc.isLogin();
     this.isMobile = window.innerWidth < 992 ? true : false;
     this.isCollapsed = window.innerWidth < 992 ? false : true;
+
+    this.activatedRoute.params.subscribe(console.log)
   }
   onWindowResize(event) {
     this.isCollapsed = event.target.innerWidth < 992 ? false : true;
