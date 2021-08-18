@@ -50,22 +50,10 @@ export class NavbarComponent implements OnInit {
       this.isScrollUp = true;
     }
     this.windowY = window.pageYOffset;
-    // if (this.isMobile) {
-    //   if (this.windowY >= 470 && this.pathName === '') {
-    //     this.navColor = true;
-    //   } else {
-    //     this.navColor = false;
-    //   }
-    // } else {
-    //   if (this.windowY >= 836 && this.pathName === '') {
-    //     this.navColor = true;
-    //   } else {
-    //     this.navColor = false;
-    //   }
-    // }
-    if (!this.isMobile && this.windowY >= 836 && this.pathName === '') {
+    // 桌機 首頁 往下滑到836 && 手機 首頁 往下滑到470 => navBar透明化
+    if (!this.isMobile && this.windowY >= 836 && this.pathName.includes('home/page')) {
       this.navColor = true;
-    } else if (this.isMobile && this.windowY >= 470 && this.pathName === '') {
+    } else if (this.isMobile && this.windowY >= 470 && this.pathName.includes('home/page')) {
       this.navColor = true;
     } else {
       this.navColor = false;

@@ -1,6 +1,8 @@
-import { ArticleData, ArticleService } from './../services/article.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ArticleData, ArticleService, Paginate } from './../services/article.service';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgbCarousel, NgbSlideEventDirection, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -8,8 +10,22 @@ import { NgbCarousel, NgbSlideEventDirection, NgbSlideEventSource } from '@ng-bo
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  constructor(private articleSvc: ArticleService) { }
+  constructor(
+    private articleSvc: ArticleService,
+    private viewport: ViewportScroller,
+    private route: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
+
+  }
   public articleToDisplay: ArticleData[];
+  public scrollToTopButtonShow = false;
+
+  @HostListener('window:scroll', ['$event'])
+
+  onWindowScroll() {
+    this.scrollToTopButtonShow = window.pageYOffset > 850 ? true : false;
+  }
 
   public developers = [
     {
@@ -29,14 +45,40 @@ export class HomeComponent implements OnInit {
     }
   ];
 
+  public pageInfo: Paginate = {
+    current_page: 1,
+    last_page: 1,
+    per_page: 10,
+    total: 0
+  }
+
+  public scrollToTop() {
+    this.viewport.scrollToPosition([0, 700]);
+  }
+
+
+  public pageChange(e) {
+    this.route.navigate(['..', e], {
+      relativeTo: this.activatedRoute
+    });
+    // this.getArticleList(e);
+    setTimeout(() => {
+      this.scrollToTop();
+    }, 300); // 換頁稍微遲緩
+  }
+
   getArticleList(page: number = 1, user?: string) {
     this.articleSvc.getArticleList(page, user).subscribe((res) => {
       this.articleToDisplay = res.data.articles;
+      this.pageInfo = res.data.paginate;
     })
   }
 
   ngOnInit(): void {
-    this.getArticleList();
+    this.viewport.scrollToPosition([0, 0]);
+    this.activatedRoute.params.subscribe((res) => {
+      this.getArticleList(res.page);
+    })
   }
 
 }

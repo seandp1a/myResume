@@ -10,6 +10,7 @@ export class ArticleService {
 
   constructor(private http: HttpClient) { }
 
+
   getArticleList(page: number = 1, user?: string) {
     if (user) {
       return this.http.get<ArticleListResponse>(ARTICLE_API + `?page=${page}&user=${user}`);

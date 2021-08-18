@@ -12,7 +12,7 @@
 
 
 .article-list{
-  margin: 3rem 0 4rem;
+  margin: 3rem 0 1rem;
 }
 
 .my-photo{
@@ -28,7 +28,9 @@
   -webkit-line-clamp: 4; /* number of lines to show */
   -webkit-box-orient: vertical;
   white-space:normal;
-
+}
+.home-pagination{
+  margin-bottom: 6rem;
 }
 
 @media screen and (min-width : 992px) {

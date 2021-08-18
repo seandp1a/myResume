@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" [ngClass]="{'bg-dark': navColor|| pathName !== ''}"
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" [ngClass]="{'bg-dark': navColor|| !pathName.includes('home/page')}"
   [@smoothCollapse]="isScrollUp?'final':'initial'">
   <div class="container">
-    <a class="navbar-brand" routerLink="/">Usong</a>
+    <a class="navbar-brand" routerLink="/home/page/1">Usong</a>
     <div class="d-block d-lg-none text-white" *ngIf="isLogin">
       你好，{{userName?userName:''}}
     </div>
@@ -11,7 +11,7 @@
     <div [@smoothCollapse]="isCollapsed?'final':'initial'" class=" navbar-collapse ">
       <ul class="navbar-nav">
         <li class="nav-item" [ngClass]="{active:pathName===''}">
-          <a class="nav-link" routerLink="/">Home</a>
+          <a class="nav-link" routerLink="/home/page/1">Home</a>
         </li>
         <li class="nav-item" [ngClass]="{active:pathName==='gallery'}">
           <a class="nav-link" routerLink="/gallery">Gallery</a>

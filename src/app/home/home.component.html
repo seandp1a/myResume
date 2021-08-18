@@ -7,7 +7,7 @@
     </div>
   </div>
 </div>
-<div class="container">
+<div class="container ">
   <div class="d-flex flex-wrap">
 
     <div class="col-12 col-md-4 px-4">
@@ -40,13 +40,22 @@
       <!--  -->
     </div>
 
-    <div class="col-12 col-md-8 d-flex flex-column article-list">
+    <div class="col-12 col-md-8 d-flex flex-column page-body article-list">
       <app-article [article]="article" *ngFor="let article of articleToDisplay"></app-article>
-
     </div>
+    <ngb-pagination
+      class="col-12 d-flex justify-content-center home-pagination"
+      (pageChange)="pageChange($event)"
+      [collectionSize]="pageInfo.total"
+      [pageSize]="pageInfo.per_page"
+      [(page)]="pageInfo.current_page"
+      [maxSize]="5" [rotate]="true"
+      [ellipses]="false" [boundaryLinks]="true">
+    </ngb-pagination>
+
   </div>
 
 </div>
-
+<a (click)="scrollToTop()" *ngIf="scrollToTopButtonShow"  class="scroll-to-top" style="display: inline; cursor: pointer;"><i class="fa fa-long-arrow-up"></i></a>
 
 <!-- <div><code>observable|async</code>: Time: {{ time | async }}</div> -->
