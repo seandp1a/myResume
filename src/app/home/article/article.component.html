@@ -1,6 +1,6 @@
 <div class=" blog-post" style="display: block;">
   <div class="post-title">
-    <a routerLink>
+    <a routerLink="/article/{{article.id}}">
       <h1>{{article.title}}</h1>
     </a>
   </div>
@@ -8,5 +8,5 @@
     <span>{{article.updated_at| date:'longDate'}} / by <a href="#" target="_blank">{{article.user_name}}</a></span>
   </div>
   <p>{{contentPreview}}</p>
-  <a routerLink="/#" class="button button-style button-anim fa fa-long-arrow-right"><span>Read More</span></a>
+  <a routerLink="/article/{{article.id}}" class="button button-style button-anim fa fa-long-arrow-right"><span>Read More</span></a>
 </div>

@@ -11,13 +11,18 @@ export class ArticleService {
   constructor(private http: HttpClient) { }
 
 
-  getArticleList(page: number = 1, user?: string) {
+  public getArticleList(page: number = 1, user?: string) {
     if (user) {
       return this.http.get<ArticleListResponse>(ARTICLE_API + `?page=${page}&user=${user}`);
     } else {
       return this.http.get<ArticleListResponse>(ARTICLE_API + `?page=${page}`);
     }
   }
+
+  public getSingleArticle(id: number) {
+    return this.http.get<SingleArticleResponse>(ARTICLE_API + `/${id}`);
+  }
+
 
 }
 
@@ -27,6 +32,10 @@ export interface ArticleListResponse extends BackendResponseInfo {
     paginate: Paginate
   }
 }
+export interface SingleArticleResponse extends BackendResponseInfo{
+  data:SingleArticle
+}
+
 
 export interface ArticleData {
   content: string
@@ -42,4 +51,30 @@ export interface Paginate {
   last_page: number
   per_page: number
   total: number
+}
+
+export interface Comment {
+  id: number,
+  user:{
+    id:number,
+    name:string,
+    image:string
+  },
+  content: string,
+  updated_at: string
+}
+
+export interface SingleArticle {
+  comments: Comment[],
+  length: number,
+  content:string,
+  id: number,
+  sub_title: string,
+  title: string,
+  updated_at: string,
+  user:{
+    id:number,
+    name:string,
+    image:string
+  }
 }

@@ -140,9 +140,9 @@ button {
   border-bottom: 1px dashed #dedede;
 }
 
-.grabbing {
-  cursor: url(../images/owl-carousel/grabbing.png) 8 8, move;
-}
+/* .grabbing {
+  cursor: url(assets/images/owl-carousel/grabbing.png) 8 8, move;
+} */
 
 .button {
   border: none;
@@ -825,15 +825,15 @@ blockquote {
 
 .about-author .picture {
   float: left;
-  height: 75px;
-  width: 75px;
+  height: 100px;
+  width: 100px;
   overflow: hidden;
   border-radius: 100%;
   background-color: #333333;
 }
 
 .about-author .c-padding {
-  padding: 0px 0px 0px 100px;
+  padding: 0px 0px 0px 130px;
 }
 
 .about-author h3 {
@@ -1808,4 +1808,33 @@ background-color: #08a6f3;
 }
 .fa-long-arrow-right:before {
   content: "\f178";
+}
+@font-face {
+  font-family: 'simple-line-icons';
+  src: url('../fonts/Simple-Line-Icons.eot?v=2.4.0');
+  src: url('../fonts/Simple-Line-Icons.eot?v=2.4.0#iefix') format('embedded-opentype'),
+  url('../fonts/Simple-Line-Icons.woff2?v=2.4.0') format('woff2'),
+  url('../fonts/Simple-Line-Icons.ttf?v=2.4.0') format('truetype'),
+  url('../fonts/Simple-Line-Icons.woff?v=2.4.0') format('woff'),
+  url('../fonts/Simple-Line-Icons.svg?v=2.4.0#simple-line-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.icon-bubbles{
+  font-family: 'simple-line-icons';
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+
+.icon-bubbles:before {
+  content: "\e04a";
+}
+:after, :before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }

@@ -93,8 +93,6 @@ export class NavbarComponent implements OnInit {
     this.isLogin = this.loginSvc.isLogin();
     this.isMobile = window.innerWidth < 992 ? true : false;
     this.isCollapsed = window.innerWidth < 992 ? false : true;
-
-    this.activatedRoute.params.subscribe(console.log)
   }
   onWindowResize(event) {
     this.isCollapsed = event.target.innerWidth < 992 ? false : true;
