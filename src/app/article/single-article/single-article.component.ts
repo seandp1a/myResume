@@ -15,23 +15,38 @@ export class SingleArticleComponent implements OnInit {
     private route: Router,
     private activatedRoute: ActivatedRoute) { }
 
-  public articleDetail:SingleArticle= {
+  public articleDetail: SingleArticle = {
     comments: [],
     length: 0,
-    content:'',
+    content: '',
     id: 0,
     sub_title: '',
     title: '',
     updated_at: '',
-    user:{
-      id:0,
-      name:'',
-      image:''
+    user: {
+      id: 0,
+      name: '',
+      image: ''
     }
   }
+  public editorData;
 
-  getSingleArticle(id){
-    this.articleSvc.getSingleArticle(id).subscribe((res)=>{
+  public editorConfig = {
+    toolbar: [
+      ['Source'],
+      ['Styles', 'Format', 'Font', 'FontSize'],
+      ['Bold', 'Italic'],
+      ['Undo', 'Redo'],
+      ['Image'],
+      ['About']
+    ],
+    extraPlugins: 'editorplaceholder',
+    editorplaceholder: '分享您的想法...'
+  }
+
+
+  getSingleArticle(id) {
+    this.articleSvc.getSingleArticle(id).subscribe((res) => {
       this.articleDetail = res.data;
     })
   }
