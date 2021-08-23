@@ -1,7 +1,7 @@
 import { BackendResponseInfo } from './user.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ARTICLE_API } from './apiName';
+import { ARTICLE_API, COMMENT_API } from './apiName';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,11 @@ export class ArticleService {
     return this.http.get<SingleArticleResponse>(ARTICLE_API + `/${id}`);
   }
 
+  public sendComment(body: { article_id: number, content: string, member_token: string }) {
+    return this.http.post<BackendResponseInfo>(COMMENT_API, body);
+  }
+
+
 
 }
 
@@ -32,8 +37,8 @@ export interface ArticleListResponse extends BackendResponseInfo {
     paginate: Paginate
   }
 }
-export interface SingleArticleResponse extends BackendResponseInfo{
-  data:SingleArticle
+export interface SingleArticleResponse extends BackendResponseInfo {
+  data: SingleArticle
 }
 
 
@@ -55,10 +60,10 @@ export interface Paginate {
 
 export interface Comment {
   id: number,
-  user:{
-    id:number,
-    name:string,
-    image:string
+  user: {
+    id: number,
+    name: string,
+    image: string
   },
   content: string,
   updated_at: string
@@ -67,14 +72,14 @@ export interface Comment {
 export interface SingleArticle {
   comments: Comment[],
   length: number,
-  content:string,
+  content: string,
   id: number,
   sub_title: string,
   title: string,
   updated_at: string,
-  user:{
-    id:number,
-    name:string,
-    image:string
+  user: {
+    id: number,
+    name: string,
+    image: string
   }
 }

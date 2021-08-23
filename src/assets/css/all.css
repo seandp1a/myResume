@@ -34,12 +34,13 @@
 }
 
 .avatar-box{
-  width: 80px;
-  height: 100px;
+  width: 120px;
+  height: 140px;
   background-color: rgb(218, 218, 218);
   /* border: 1px solid rgb(156, 156, 147); */
   border-radius: 5px;
   position: relative;
+  overflow: hidden;
 }
 
 .article-avatar::before{
@@ -68,6 +69,20 @@
   font-size: .8rem;
   font-style: italic;
 }
+.comment-index{
+
+}
+
+
+.comment-photo{
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
 @media screen and (min-width : 992px) {
   .display-1-lg{
     font-size: 5rem;
@@ -78,8 +93,12 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  .article-avatar::before{
 
+  .comment-text {
+    padding-left: 160px;
+  }
+  .comment-text *{
+    font-size: 1rem;
   }
 }
 
@@ -87,5 +106,15 @@
   .mybanner{
    height: fit-content;
     padding: 7rem 0;
+  }
+  .comment-text {
+    padding-left: 60px;
+  }
+  .comment-text *{
+    font-size: 1rem;
+  }
+  .comment-photo{
+    width: 80px;
+    height: 80px;
   }
 }

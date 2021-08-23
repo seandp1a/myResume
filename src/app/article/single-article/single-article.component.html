@@ -14,14 +14,14 @@
           </a>
           <a class="smoth-scroll"><i class="icon-bubbles"></i></a>
         </div>
-        <div class="col-md-12 blog-post" style="display: block;">
+        <div class="col-md-12 " style="display: block;">
           <!-- Post Headline Start -->
-          <div class="post-title">
+          <div class="post-title ">
             <h1>{{articleDetail.title}}</h1>
           </div>
           <!-- Post Headline End -->
           <!-- Post Detail Start -->
-          <div class="post-info">
+          <div class="post-info ">
             <span>{{articleDetail.updated_at| date:'longDate'}} / by <a routerLink=''
                 target="_blank">{{articleDetail.user.name}}</a></span>
           </div>
@@ -36,7 +36,7 @@
 
           <div class="about-author margin-top-70 margin-bottom-50">
             <div class="picture text-center">
-              <img [src]="articleDetail.user.image" class="img-responsive w-75" alt="">
+              <img [src]="articleDetail.user.image" class="img-responsive w-100" alt="">
             </div>
 
             <div class="c-padding">
@@ -82,24 +82,50 @@
           <!-- Post Comment (Disqus) Start -->
           <div id="comment" class="comment">
             <h3>{{articleDetail.comments.length}} {{articleDetail.comments.length>1?'Comments':'Comment'}} </h3>
-
+            <hr>
+            <div class="comment-item" *ngFor="let item of articleDetail.comments;let index = index">
+              <div class="d-flex flex-column">
+                <div class="d-flex align-items-center flex-wrap my-3">
+                  <div class="col-12 d-flex align-items-center ">
+                    <h4 class="comment-index ">{{index+1}}</h4>
+                    <div class="comment-photo mx-3"
+                      [style]="{backgroundImage:'url(' + item.user.image + ')'}"></div>
+                    <div class="mx-3">
+                      <h4 class="author-name"><a routerLink="/">{{item.user.name}}</a></h4>
+                      <span  class="post-info font-italic"> {{item.updated_at}}</span>
+                    </div>
+                  </div>
+                  <div class="col-12 comment-text mt-3">
+                    <p class="pl-3" [innerHTML]="item.content"></p>
+                  </div>
+                </div>
+              </div>
+              <hr>
+            </div>
 
 
             <h3>Discuss about post</h3>
             <div class="d-flex flex-wrap">
-              <div class="col-12 col-lg-2 d-flex flex-lg-column mb-2 mb-lg-0">
+              <div class="col-12 col-lg-2 d-flex flex-lg-column mb-2 mb-lg-0" >
                 <div class="avatar-box">
-                  <i class="article-avatar abs-center" ></i>
+                  <i class="abs-center article-avatar" *ngIf="!isLogin"></i>
+                  <img [src]="this.loginUserInfo.image" class="w-100" alt="" *ngIf="isLogin">
                 </div>
-                <div class="comment-author d-flex flex-column justify-content-center pl-2 pl-lg-0">
-                  <div class="tip">您現在以訪客身分留言</div>
-                  <div class="tip">點擊此處<a routerLink="/login">登入</a></div>
+                <div class="comment-author d-flex flex-column justify-content-center pl-2 pl-lg-0" *ngIf="!isLogin">
+                  <div class="tip">訪客，您好</div>
+                  <div class="tip">點擊此處<a routerLink="/login">登入</a>留言</div>
+                </div>
+                <div class="comment-author d-flex flex-column justify-content-center pl-2 pl-lg-0" *ngIf="isLogin" >
+                  <h4 class="text-dark">{{loginUserInfo.name}}</h4>
+                  <div class="tip">{{loginUserInfo.name}}不是你嗎?點擊此處<a routerLink='/login' (click)="loginSvc.logoutUser(loginUserInfo.member_token)">登出</a>留言</div>
                 </div>
               </div>
-              <ckeditor class="col-12 col-lg-10" [(data)]="editorData" [(config)]="editorConfig" >
+
+              <ckeditor class="col-12 col-lg-10" [(data)]="editorData" [(config)]="editorConfig" [readOnly]="!isLogin" >
               </ckeditor>
+
               <div class="col-12 ">
-                <button class="load-more-button mx-0 ml-auto my-2"> 送出</button>
+                <button class="load-more-button mx-0 ml-auto my-2" (click)="doCommit()"> 送出</button>
               </div>
             </div>
 

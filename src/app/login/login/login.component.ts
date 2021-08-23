@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
         this.loginSvc.loginUserInfo.next(res.data); // 更新登入資料
         sessionStorage.setItem('userData', JSON.stringify({ id: res.data.id, member_token: res.data.member_token }));
         setTimeout(() => {
-          this.route.navigate(['/userList']);
+          this.route.navigate(['/home/page/1']);
         }, 1500);
       } else (
         alert('登入失敗')

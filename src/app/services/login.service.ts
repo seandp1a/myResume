@@ -28,6 +28,7 @@ export class LoginService {
         return true;
       }
     });
+
     if (sessionStorage.getItem('userData')) {
       const id = JSON.parse(sessionStorage.getItem('userData')).id;
       const token = JSON.parse(sessionStorage.getItem('userData')).member_token;

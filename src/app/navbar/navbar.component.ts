@@ -76,6 +76,8 @@ export class NavbarComponent implements OnInit {
       } else {
         this.isLogin = false;
       }
+    },(e)=>{
+      console.log(e)
     })
     if (loginSvc.isLogin()) {
       this.isLogin = true;
