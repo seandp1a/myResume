@@ -5,10 +5,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
+  { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) ,data: { animation: 'Home' }  },
   { path: 'article', loadChildren: () => import('./article/article.module').then(m => m.ArticleModule) },
-  { path: 'gallery', loadChildren: () => import('./gallery/gallery.module').then(m => m.GalleryModule) },
-  { path: 'userList', loadChildren: () => import('./user/user.module').then(m => m.UserModule) },
+  { path: 'gallery', loadChildren: () => import('./gallery/gallery.module').then(m => m.GalleryModule), data: { animation: 'Gallery' } },
+  { path: 'userList', loadChildren: () => import('./user/user.module').then(m => m.UserModule), data: { animation: 'UserList' }  },
   { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '/404' }

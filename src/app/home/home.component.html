@@ -7,7 +7,7 @@
     </div>
   </div>
 </div>
-<div class="container ">
+<div id="page-body" class="container">
   <div class="d-flex flex-wrap">
 
     <div class="col-12 col-md-4 px-4">
@@ -40,9 +40,11 @@
       <!--  -->
     </div>
 
-    <div class="col-12 col-md-8 d-flex flex-column page-body article-list">
-      <app-article [article]="article" *ngFor="let article of articleToDisplay"></app-article>
-    </div>
+    <ul class="col-12 col-md-8 d-flex flex-column page-body article-list" style="position: relative;"  [@articleAnimation]="articleToDisplay.length">
+      <li *ngFor="let article of articleToDisplay" >
+        <app-article   [article]="article" ></app-article>
+      </li>
+    </ul>
     <ngb-pagination
       class="col-12 d-flex justify-content-center home-pagination"
       (pageChange)="pageChange($event)"

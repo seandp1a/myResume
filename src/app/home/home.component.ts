@@ -1,13 +1,37 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleData, ArticleService, Paginate } from './../services/article.service';
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { NgbCarousel, NgbSlideEventDirection, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { Component, HostBinding, HostListener, OnInit } from '@angular/core';
+import { trigger, state, style, animate, transition, query, stagger } from '@angular/animations';
 import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  animations: [
+    trigger('pageAnimations', [
+      transition(':enter', [
+        query('#page-body', [
+          style({ opacity: 0, transform: 'translateY(-100px)' }),
+          stagger(-30, [
+            animate('500ms cubic-bezier(0.35, 0, 0.25, 1)', style({ opacity: 1, transform: 'none' }))
+          ])
+        ])
+      ])
+    ]),
+    trigger('articleAnimation', [
+      transition('* <=> *', [
+        query(':enter',[
+          style({ opacity: 0 ,transform: 'translateX(-40%)'}),
+          stagger('100ms', animate('500ms ease-out', style({ opacity: 1 ,transform: 'translateX(0%)'})))
+        ],{ optional: true }),
+        query(':leave',
+          animate('300ms', style({ opacity: 0 })),
+          { optional: true }
+        )
+      ])
+    ])
+  ]
 })
 export class HomeComponent implements OnInit {
   constructor(
@@ -18,6 +42,9 @@ export class HomeComponent implements OnInit {
   ) {
 
   }
+
+  @HostBinding('@pageAnimations')
+
   public articleToDisplay: ArticleData[];
   public scrollToTopButtonShow = false;
 
@@ -68,6 +95,7 @@ export class HomeComponent implements OnInit {
   }
 
   getArticleList(page: number = 1, user?: string) {
+    this.articleToDisplay=[];
     this.articleSvc.getArticleList(page, user).subscribe((res) => {
       this.articleToDisplay = res.data.articles;
       this.pageInfo = res.data.paginate;
