@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
 
   public articleToDisplay: ArticleData[];
   public scrollToTopButtonShow = false;
+  public scrollState = '';
 
   @HostListener('window:scroll', ['$event'])
 
@@ -80,7 +81,13 @@ export class HomeComponent implements OnInit {
   }
 
   public scrollToTop() {
-    this.viewport.scrollToPosition([0, 700]);
+    window.scroll({
+      top: 700,
+      left: 0,
+      behavior: 'smooth'
+    });
+    // this.viewport.scrollToPosition([0, 700]);
+
   }
 
 

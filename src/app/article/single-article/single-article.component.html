@@ -15,26 +15,27 @@
           <a class="smoth-scroll"><i class="icon-bubbles"></i></a>
         </div>
         <div class="col-md-12 " style="display: block;">
-          <!-- Post Headline Start -->
-          <div class="post-title ">
-            <h1>{{articleDetail.title}}</h1>
+
+          <div class="post-head px-3 py-3">
+            <div class="post-title ">
+              <h1>{{articleDetail.title}}</h1>
+            </div>
+
+            <div class="post-info ">
+              <span>{{articleDetail.updated_at| date:'longDate'}} / by <a routerLink=''
+                  target="_blank">{{articleDetail.user.name}}</a></span>
+            </div>
           </div>
-          <!-- Post Headline End -->
-          <!-- Post Detail Start -->
-          <div class="post-info ">
-            <span>{{articleDetail.updated_at| date:'longDate'}} / by <a routerLink=''
-                target="_blank">{{articleDetail.user.name}}</a></span>
-          </div>
-          <!-- Post Detail End -->
 
 
-          <p [innerHTML]="articleDetail.content"></p>
+
+          <p class="mt-3 px-3 post-content" [innerHTML]="articleDetail.content"></p>
 
 
 
 
 
-          <div class="about-author margin-top-70 margin-bottom-50">
+          <div class="about-author margin-top-70 margin-bottom-50 ">
             <div class="picture text-center">
               <img [src]="articleDetail.user.image" class="img-responsive w-100" alt="">
             </div>

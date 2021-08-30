@@ -61,6 +61,16 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.post-head{
+  background-color: #343a40;
+  color: white;
+  border-radius: 15px;
+}
+.post-content img{
+  max-width: 100%;
+}
+
 .comment-author{
   color: rgb(128, 128, 128);
   margin: .5rem 0
@@ -69,7 +79,6 @@
   font-size: .8rem;
   font-style: italic;
 }
-
 
 
 .comment-btn {
