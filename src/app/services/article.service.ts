@@ -1,5 +1,5 @@
 import { BackendResponseInfo } from './user.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ARTICLE_API, COMMENT_API } from './apiName';
 
@@ -30,7 +30,11 @@ export class ArticleService {
     return this.http.post<BackendResponseInfo>(COMMENT_API, body);
   }
 
-
+  public deleteComment(token: string ,commentId){
+    let headers = new HttpHeaders();
+    headers.append('Authorization', `Bearer ${token}`);
+    return this.http.request<BackendResponseInfo>('delete',COMMENT_API+`/${commentId}`,{ body: { member_token: token }, headers: headers });
+  }
 
 
 }

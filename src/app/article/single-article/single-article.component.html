@@ -87,30 +87,31 @@
               <div class="d-flex flex-column">
                 <div class="d-flex align-items-center flex-wrap my-3">
                   <div class="col-12 d-flex align-items-center  flex-wrap px-0 px-sm-2">
-                    <h4 class="comment-index col-12 col-sm-1">{{index+1}}</h4>
+                    <h4 class="comment-index col-12">{{index+1}}</h4>
                     <div class="comment-photo mx-3" [style]="{backgroundImage:'url(' + item.user.image + ')'}"></div>
                     <div class="mx-0 mx-sm-3 pl-3">
                       <h4 class="author-name mx-1 my-2"><a routerLink="/">{{item.user.name}}</a></h4>
                       <span class="post-info font-italic"> {{item.updated_at}}</span>
                     </div>
-                    <div class="ml-auto comment-btn d-flex col-12 col-sm-1  flex-row flex-sm-column justify-content-between">
-                      <a (click)="turnOnEditMode(item.id,item.content)" *ngIf="item.user.id===loginUserInfo.id">
+                    <div
+                      class="ml-auto comment-btn d-flex col-12 col-sm-1  flex-row flex-sm-column flex-sm-column-reverse justify-content-between">
+                      <a (click)="open(deleteModal,item.id)" *ngIf="item.user.id===loginUserInfo.id">
                         <i class="fas fa-trash "></i></a>
-                      <a (click)="turnOnEditMode(item.id,item.content)" *ngIf="item.user.id===loginUserInfo.id" >
+                      <a (click)="turnOnEditMode(item.id,item.content)" *ngIf="item.user.id===loginUserInfo.id">
                         <i class="fas fa-edit"></i></a>
                     </div>
                   </div>
-                  <div class="col-12 comment-text mt-3"
-                  *ngIf="!(edditStatus.mode&&item.id===edditStatus.id)">
+                  <div class="col-12 comment-text mt-3" *ngIf="!(edditStatus.mode&&item.id===edditStatus.id)">
                     <p class="pl-3" [innerHTML]="item.content"></p>
                   </div>
                   <div class="eddit-comment col-12 d-flex flex-column mt-3"
-                  *ngIf="edditStatus.mode&&item.id===edditStatus.id">
+                    *ngIf="edditStatus.mode&&item.id===edditStatus.id">
                     <ckeditor [(data)]="edditEditorData" [(config)]="editorConfig">
                     </ckeditor>
                     <div class="mt-2 d-flex justify-content-end">
                       <button class="btn-outline-dark btn  ml-lg-auto" (click)="turnOffEditMode()">取消</button>
-                      <button class="btn-outline-success btn ml-auto ml-lg-4" (click)="edditComment(item.id)">送出</button>
+                      <button class="btn-outline-success btn ml-auto ml-lg-4"
+                        (click)="edditComment(item.id)">送出</button>
                     </div>
                   </div>
 
@@ -176,6 +177,25 @@
     </div>
     <!-- Subscribe Form End -->
 
+    <!-- Modal -->
 
+    <ng-template #deleteModal let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">刪除留言</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ngb-alert class="myalert" [type]="'success'" [dismissible]="false" *ngIf="deleteSuccessAlert">成功刪除
+        </ngb-alert>
+        確定要刪除此留言？
+      </div>
+      <div class="modal-footer px-4">
+        <button type="button" class="btn btn-outline-danger mr-auto" (click)="deleteComment(modal)">Delete</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">取消</button>
+      </div>
+    </ng-template>
+    <!-- Modal -->
   </div>
 </div>

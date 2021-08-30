@@ -1,6 +1,7 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ArticleService, SingleArticle } from 'src/app/services/article.service';
 import { LoginUser, LoginService } from 'src/app/services/login.service';
 
@@ -15,6 +16,7 @@ export class SingleArticleComponent implements OnInit {
     private viewport: ViewportScroller,
     private route: Router,
     private activatedRoute: ActivatedRoute,
+    private modalService: NgbModal,
     public loginSvc: LoginService) {
 
   }
@@ -62,6 +64,8 @@ export class SingleArticleComponent implements OnInit {
     id: 0,
   }
   public edditEditorData;
+  public deleteSuccessAlert = false;
+  public deleteCommentId=0;
 
   getSingleArticle(id) {
     this.articleSvc.getSingleArticle(id).subscribe((res) => {
@@ -96,7 +100,7 @@ export class SingleArticleComponent implements OnInit {
         article_id: this.articleDetail.id,
         content: this.edditEditorData,
         member_token: this.loginUserInfo.member_token
-      },id).subscribe((res) => {
+      }, id).subscribe((res) => {
         if (res.code === 200) {
           this.getSingleArticle(this.articleDetail.id);
           setTimeout(() => {
@@ -110,13 +114,43 @@ export class SingleArticleComponent implements OnInit {
     }
   }
 
+  deleteComment(modal) {
+      this.articleSvc.deleteComment(this.loginUserInfo.member_token,this.deleteCommentId).subscribe((res)=>{
+        if(res.code === 200){
+         this.deleteSuccessAlert = true;
+         setTimeout(() => {
+           modal.close('delete-complete');
+         }, 1000);
+        }else{
+          alert(res.message.member_token);
+        }
+      })
 
-  turnOnEditMode(id,content) {
+  }
+  // modal 在template被打開後 丟被指定的modal近來 用modalService去控制這個modal
+  open(content, id) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'md' }).result.then((result) => {
+      // 此處為modal 發生close事件 result為事件觸發原因
+      console.log(`Modal close reason: ${result}`);
+      this.deleteSuccessAlert = false;
+      this.deleteCommentId = 0;
+      this.getSingleArticle(this.articleDetail.id);
+    }, (reason) => {
+      // 此處為modal 發生dismiss事件 reason為事件觸發原因
+      this.deleteSuccessAlert = false;
+      this.deleteCommentId = 0;
+      console.log(`Dismissed`);
+    });
+    this.deleteCommentId = id;
+  }
+
+
+  turnOnEditMode(id, content) {
     this.edditStatus.id = id;
     this.edditStatus.mode = true;
     this.edditEditorData = content;
   }
-  turnOffEditMode(){
+  turnOffEditMode() {
     this.edditStatus.id = 0;
     this.edditStatus.mode = false;
     this.edditEditorData = '';
