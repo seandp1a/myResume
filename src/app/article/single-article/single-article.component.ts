@@ -127,6 +127,7 @@ export class SingleArticleComponent implements OnInit {
       })
 
   }
+
   // modal 在template被打開後 丟被指定的modal近來 用modalService去控制這個modal
   open(content, id) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'md' }).result.then((result) => {
