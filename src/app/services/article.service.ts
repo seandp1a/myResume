@@ -23,9 +23,13 @@ export class ArticleService {
     return this.http.get<SingleArticleResponse>(ARTICLE_API + `/${id}`);
   }
 
-  public sendComment(body: { article_id: number, content: string, member_token: string }) {
+  public sendComment(body: { article_id: number, content: string, member_token: string },commentId?:number) {
+    if(commentId){
+      return this.http.put<BackendResponseInfo>(COMMENT_API+`/${commentId}`, body);
+    }
     return this.http.post<BackendResponseInfo>(COMMENT_API, body);
   }
+
 
 
 

@@ -69,10 +69,24 @@
   font-size: .8rem;
   font-style: italic;
 }
-.comment-index{
 
+
+
+.comment-btn {
+  color: #1abc9c;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
 }
 
+.comment-btn:hover,
+.comment-btn:focus {
+  color: #333333;
+}
+.comment-btn .fas::before{
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-size: 1.5rem;
+}
 
 .comment-photo{
   width: 100px;

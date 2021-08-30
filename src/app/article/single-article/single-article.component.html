@@ -86,19 +86,36 @@
             <div class="comment-item" *ngFor="let item of articleDetail.comments;let index = index">
               <div class="d-flex flex-column">
                 <div class="d-flex align-items-center flex-wrap my-3">
-                  <div class="col-12 d-flex align-items-center ">
-                    <h4 class="comment-index ">{{index+1}}</h4>
-                    <div class="comment-photo mx-3"
-                      [style]="{backgroundImage:'url(' + item.user.image + ')'}"></div>
-                    <div class="mx-3">
-                      <h4 class="author-name"><a routerLink="/">{{item.user.name}}</a></h4>
-                      <span  class="post-info font-italic"> {{item.updated_at}}</span>
+                  <div class="col-12 d-flex align-items-center  flex-wrap px-0 px-sm-2">
+                    <h4 class="comment-index col-12 col-sm-1">{{index+1}}</h4>
+                    <div class="comment-photo mx-3" [style]="{backgroundImage:'url(' + item.user.image + ')'}"></div>
+                    <div class="mx-0 mx-sm-3 pl-3">
+                      <h4 class="author-name mx-1 my-2"><a routerLink="/">{{item.user.name}}</a></h4>
+                      <span class="post-info font-italic"> {{item.updated_at}}</span>
+                    </div>
+                    <div class="ml-auto comment-btn d-flex col-12 col-sm-1  flex-row flex-sm-column justify-content-between">
+                      <a (click)="turnOnEditMode(item.id,item.content)" *ngIf="item.user.id===loginUserInfo.id">
+                        <i class="fas fa-trash "></i></a>
+                      <a (click)="turnOnEditMode(item.id,item.content)" *ngIf="item.user.id===loginUserInfo.id" >
+                        <i class="fas fa-edit"></i></a>
                     </div>
                   </div>
-                  <div class="col-12 comment-text mt-3">
+                  <div class="col-12 comment-text mt-3"
+                  *ngIf="!(edditStatus.mode&&item.id===edditStatus.id)">
                     <p class="pl-3" [innerHTML]="item.content"></p>
                   </div>
+                  <div class="eddit-comment col-12 d-flex flex-column mt-3"
+                  *ngIf="edditStatus.mode&&item.id===edditStatus.id">
+                    <ckeditor [(data)]="edditEditorData" [(config)]="editorConfig">
+                    </ckeditor>
+                    <div class="mt-2 d-flex justify-content-end">
+                      <button class="btn-outline-dark btn  ml-lg-auto" (click)="turnOffEditMode()">取消</button>
+                      <button class="btn-outline-success btn ml-auto ml-lg-4" (click)="edditComment(item.id)">送出</button>
+                    </div>
+                  </div>
+
                 </div>
+
               </div>
               <hr>
             </div>
@@ -106,7 +123,7 @@
 
             <h3>Discuss about post</h3>
             <div class="d-flex flex-wrap">
-              <div class="col-12 col-lg-2 d-flex flex-lg-column mb-2 mb-lg-0" >
+              <div class="col-12 col-lg-2 d-flex flex-lg-column mb-2 mb-lg-0">
                 <div class="avatar-box">
                   <i class="abs-center article-avatar" *ngIf="!isLogin"></i>
                   <img [src]="this.loginUserInfo.image" class="w-100" alt="" *ngIf="isLogin">
@@ -115,17 +132,18 @@
                   <div class="tip">訪客，您好</div>
                   <div class="tip">點擊此處<a routerLink="/login">登入</a>留言</div>
                 </div>
-                <div class="comment-author d-flex flex-column justify-content-center pl-2 pl-lg-0" *ngIf="isLogin" >
+                <div class="comment-author d-flex flex-column justify-content-center pl-2 pl-lg-0" *ngIf="isLogin">
                   <h4 class="text-dark">{{loginUserInfo.name}}</h4>
-                  <div class="tip">{{loginUserInfo.name}}不是你嗎?點擊此處<a routerLink='/login' (click)="loginSvc.logoutUser(loginUserInfo.member_token)">登出</a>留言</div>
+                  <div class="tip">{{loginUserInfo.name}}不是你嗎?點擊此處<a routerLink='/login'
+                      (click)="loginSvc.logoutUser(loginUserInfo.member_token)">登出</a>留言</div>
                 </div>
               </div>
 
-              <ckeditor class="col-12 col-lg-10" [(data)]="editorData" [(config)]="editorConfig" [readOnly]="!isLogin" >
+              <ckeditor class="col-12 col-lg-10" [(data)]="editorData" [(config)]="editorConfig" [readOnly]="!isLogin">
               </ckeditor>
 
               <div class="col-12 ">
-                <button class="load-more-button mx-0 ml-auto my-2" (click)="doCommit()"> 送出</button>
+                <button class="load-more-button mx-0 ml-auto my-2" (click)="insertCommit()"> 送出</button>
               </div>
             </div>
 

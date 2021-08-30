@@ -16,12 +16,7 @@ export class SingleArticleComponent implements OnInit {
     private route: Router,
     private activatedRoute: ActivatedRoute,
     public loginSvc: LoginService) {
-    loginSvc.getLoginUserData().subscribe((res) => {
-      this.loginUserInfo = res;
-      this.isLogin = res ? true : false;
-    }, (e) => {
-      console.log(e);
-    })
+
   }
 
   public articleDetail: SingleArticle = {
@@ -38,8 +33,8 @@ export class SingleArticleComponent implements OnInit {
       image: ''
     }
   }
+  // 新增留言相關
   public editorData;
-
   public editorConfig = {
     toolbar: [
       ['Source'],
@@ -52,9 +47,8 @@ export class SingleArticleComponent implements OnInit {
     extraPlugins: 'editorplaceholder',
     editorplaceholder: '分享您的想法...',
   }
-
+  // 登入資料相關
   public isLogin = false;
-
   public loginUserInfo: LoginUser = {
     id: 0,
     name: '',
@@ -62,6 +56,12 @@ export class SingleArticleComponent implements OnInit {
     email: '',
     member_token: ''
   };
+  // 編輯留言相關
+  public edditStatus = {
+    mode: false,
+    id: 0,
+  }
+  public edditEditorData;
 
   getSingleArticle(id) {
     this.articleSvc.getSingleArticle(id).subscribe((res) => {
@@ -69,7 +69,7 @@ export class SingleArticleComponent implements OnInit {
     })
   }
 
-  doCommit() {
+  insertCommit() {
     if (this.editorData && this.editorData.trim() !== '') {
       this.articleSvc.sendComment({
         article_id: this.articleDetail.id,
@@ -83,18 +83,57 @@ export class SingleArticleComponent implements OnInit {
             this.viewport.scrollToPosition([0, 0]);
           }, 500);
         }
-        else{
+        else {
           alert(res.message.member_token);
         }
-      })
+      });
     }
   }
+
+  edditComment(id) {
+    if (this.edditEditorData && this.edditEditorData.trim() !== '') {
+      this.articleSvc.sendComment({
+        article_id: this.articleDetail.id,
+        content: this.edditEditorData,
+        member_token: this.loginUserInfo.member_token
+      },id).subscribe((res) => {
+        if (res.code === 200) {
+          this.getSingleArticle(this.articleDetail.id);
+          setTimeout(() => {
+            this.turnOffEditMode();
+          }, 300);
+        }
+        else {
+          alert(res.message.member_token);
+        }
+      });
+    }
+  }
+
+
+  turnOnEditMode(id,content) {
+    this.edditStatus.id = id;
+    this.edditStatus.mode = true;
+    this.edditEditorData = content;
+  }
+  turnOffEditMode(){
+    this.edditStatus.id = 0;
+    this.edditStatus.mode = false;
+    this.edditEditorData = '';
+  }
+
 
   ngOnInit(): void {
     this.viewport.scrollToPosition([0, 0]);
     this.activatedRoute.params.subscribe((res) => {
       this.getSingleArticle(res.id);
-    })
+    });
+    this.loginSvc.getLoginUserData().subscribe((res) => {
+      this.loginUserInfo = res;
+      this.isLogin = res ? true : false;
+    }, (e) => {
+      console.log(e);
+    });
   }
 
 }
