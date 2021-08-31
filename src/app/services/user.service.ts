@@ -1,4 +1,4 @@
-import { USER_API, IMG_API } from './apiName';
+import { USER_API, IMG_API } from '../consts/apiName';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -11,6 +11,9 @@ export class UserService {
 
   getUserList() {
     return this.http.get<UserListResponse>(USER_API);
+  }
+  getSingleUser(id:number){
+    return this.http.get<SingleUserResponse>(USER_API+`/${id}`);
   }
 
   insertUser(body: { name: string, email: string, password: string }) {
@@ -50,6 +53,9 @@ export interface ResponseMsg {
 export interface UserListResponse extends BackendResponseInfo {
   data: UserData[]
 }
+export interface SingleUserResponse extends BackendResponseInfo {
+  data: UserData
+}
 
 export interface UserData {
   id: number,
@@ -57,7 +63,8 @@ export interface UserData {
   email: string,
   email_verified_at: string,
   created_at: string,
-  image: string
+  image: string,
+  introduction:string
 }
 
 export interface UploadImgResponse {

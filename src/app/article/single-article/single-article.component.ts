@@ -1,8 +1,9 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ArticleService, SingleArticle } from 'src/app/services/article.service';
+import { ArticleService, Comment, SingleArticle } from 'src/app/services/article.service';
 import { LoginUser, LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -17,7 +18,8 @@ export class SingleArticleComponent implements OnInit {
     private route: Router,
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
-    public loginSvc: LoginService) {
+    public loginSvc: LoginService,
+    public sanitizer: DomSanitizer) {
 
   }
 
@@ -36,6 +38,7 @@ export class SingleArticleComponent implements OnInit {
     }
   }
   // 新增留言相關
+  public commentToDisplay:Comment[] = [];
   public editorData;
   public editorConfig = {
     toolbar: [
@@ -81,10 +84,10 @@ export class SingleArticleComponent implements OnInit {
         member_token: this.loginUserInfo.member_token
       }).subscribe((res) => {
         if (res.code === 200) {
-          this.getSingleArticle(this.articleDetail.id);
+          this.getCommentById(this.articleDetail.id);
           setTimeout(() => {
             this.editorData = '';
-            this.viewport.scrollToPosition([0, 0]);
+            // this.viewport.scrollToPosition([0, 0]);
           }, 500);
         }
         else {
@@ -102,7 +105,7 @@ export class SingleArticleComponent implements OnInit {
         member_token: this.loginUserInfo.member_token
       }, id).subscribe((res) => {
         if (res.code === 200) {
-          this.getSingleArticle(this.articleDetail.id);
+          this.getCommentById(this.articleDetail.id);
           setTimeout(() => {
             this.turnOffEditMode();
           }, 300);
@@ -128,6 +131,14 @@ export class SingleArticleComponent implements OnInit {
 
   }
 
+  getCommentById(id){
+    this.articleSvc.getCommentByArticleId(id).subscribe((res)=>{
+      if(res.code===200){
+        this.commentToDisplay = res.data;
+      }
+    })
+  }
+
   // modal 在template被打開後 丟被指定的modal近來 用modalService去控制這個modal
   open(content, id) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'md' }).result.then((result) => {
@@ -135,7 +146,7 @@ export class SingleArticleComponent implements OnInit {
       console.log(`Modal close reason: ${result}`);
       this.deleteSuccessAlert = false;
       this.deleteCommentId = 0;
-      this.getSingleArticle(this.articleDetail.id);
+      this.getCommentById(this.articleDetail.id);
     }, (reason) => {
       // 此處為modal 發生dismiss事件 reason為事件觸發原因
       this.deleteSuccessAlert = false;
@@ -162,6 +173,7 @@ export class SingleArticleComponent implements OnInit {
     this.viewport.scrollToPosition([0, 0]);
     this.activatedRoute.params.subscribe((res) => {
       this.getSingleArticle(res.id);
+      this.getCommentById(res.id);
     });
     this.loginSvc.getLoginUserData().subscribe((res) => {
       this.loginUserInfo = res;

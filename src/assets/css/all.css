@@ -9,11 +9,17 @@
   position: relative;
 }
 
-
+.mt-nav{
+  margin-top: 56px;
+}
 
 .article-list{
   margin: 50px 0 1rem;
 }
+.article-list ul,ul.article-list {
+  list-style-type:none
+}
+
 
 .my-photo{
   width: 100%;
@@ -69,6 +75,10 @@
 }
 .post-content img{
   max-width: 100%;
+}
+.post-content{
+  overflow: auto;
+  min-height: fit-content;
 }
 
 .comment-author{

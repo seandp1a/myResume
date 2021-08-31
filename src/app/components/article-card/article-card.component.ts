@@ -2,11 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ArticleData } from 'src/app/services/article.service';
 
 @Component({
-  selector: 'app-article',
-  templateUrl: './article.component.html',
-  styleUrls: ['./article.component.css']
+  selector: 'app-article-card',
+  templateUrl: './article-card.component.html',
+  styleUrls: ['./article-card.component.css']
 })
-export class ArticleComponent implements OnInit {
+export class ArticleCardComponent implements OnInit {
+
   @Input() article: ArticleData;
   public contentPreview: string;
   constructor() { }
@@ -19,5 +20,4 @@ export class ArticleComponent implements OnInit {
   ngOnInit(): void {
     this.contentPreview = this.stringToHTML(this.article.content).innerText;
   }
-
 }

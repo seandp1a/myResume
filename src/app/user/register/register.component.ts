@@ -1,5 +1,5 @@
 import { BackendResponseInfo, UserService } from './../../services/user.service';
-import { REGEX_EMAIL } from './../../services/regex';
+import { REGEX_EMAIL } from '../../consts/regex';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';

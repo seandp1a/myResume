@@ -3,6 +3,8 @@ import { ArticleData, ArticleService, Paginate } from './../services/article.ser
 import { Component, HostBinding, HostListener, OnInit } from '@angular/core';
 import { trigger, state, style, animate, transition, query, stagger } from '@angular/animations';
 import { ViewportScroller } from '@angular/common';
+import * as DEVELOPERS from 'src/app/consts/developers.json';
+
 
 @Component({
   selector: 'app-home',
@@ -55,23 +57,8 @@ export class HomeComponent implements OnInit {
     this.scrollToTopButtonShow = window.pageYOffset > 850 ? true : false;
   }
 
-  public developers = [
-    {
-      name: 'Usong',
-      major: 'Front-End Web Developer',
-      photo: '/assets/images/author/頭貼.jpg',
-      fb: 'https://www.facebook.com/yousong.zhang/',
-      ig: 'https://www.instagram.com/seanttc/',
-      gh: 'https://github.com/seandp1a'
-    }, {
-      name: 'Roy',
-      major: 'Back-End Web Developer',
-      photo: '/assets/images/author/阿怎樣嘞.png',
-      fb: 'https://www.facebook.com/roy22887/',
-      ig: 'https://www.instagram.com/comman24/',
-      gh: 'https://github.com/cc711612'
-    }
-  ];
+  public developers = (DEVELOPERS as any).default;
+
 
   public pageInfo: Paginate = {
     current_page: 1,

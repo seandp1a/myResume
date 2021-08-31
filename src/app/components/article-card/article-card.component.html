@@ -5,7 +5,10 @@
     </a>
   </div>
   <div class="post-info">
-    <span>{{article.updated_at| date:'longDate'}} / by <a href="#" target="_blank">{{article.user_name}}</a></span>
+    <span>{{article.updated_at| date:'longDate'}} / by
+      <a target="_blank" [routerLink]="['/article/search']" [queryParams]="{ authorID:article.user.id }">
+        {{article.user.name}}</a>
+    </span>
   </div>
   <p>{{contentPreview}}</p>
   <a routerLink="/article/{{article.id}}" class="button button-style button-anim fa fa-long-arrow-right"><span>Read More</span></a>

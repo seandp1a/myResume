@@ -1,7 +1,7 @@
 import { BackendResponseInfo } from './user.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ARTICLE_API, COMMENT_API } from './apiName';
+import { ARTICLE_API, COMMENT_API } from '../consts/apiName';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +36,9 @@ export class ArticleService {
     return this.http.request<BackendResponseInfo>('delete',COMMENT_API+`/${commentId}`,{ body: { member_token: token }, headers: headers });
   }
 
+  public getCommentByArticleId(id:number){
+    return this.http.get<CommentResponse>(COMMENT_API+`?article_id=${id}`);
+  }
 
 }
 
@@ -49,6 +52,10 @@ export interface SingleArticleResponse extends BackendResponseInfo {
   data: SingleArticle
 }
 
+export interface CommentResponse extends BackendResponseInfo{
+  data:Comment[]
+}
+
 
 export interface ArticleData {
   content: string
@@ -56,9 +63,9 @@ export interface ArticleData {
   sub_title: string
   title: string
   updated_at: string
-  user_id: number
-  user_name: string
+  user:UserSimpleInfo
 }
+
 export interface Paginate {
   current_page: number
   last_page: number
@@ -68,13 +75,13 @@ export interface Paginate {
 
 export interface Comment {
   id: number,
-  user: {
-    id: number,
-    name: string,
-    image: string
-  },
+  user:UserSimpleInfo,
   content: string,
-  updated_at: string
+  updated_at: string,
+  logs:{
+    content:string,
+    updated_at:string
+  }[]
 }
 
 export interface SingleArticle {
@@ -85,9 +92,12 @@ export interface SingleArticle {
   sub_title: string,
   title: string,
   updated_at: string,
-  user: {
-    id: number,
-    name: string,
-    image: string
-  }
+  user:UserSimpleInfo
+}
+
+export interface UserSimpleInfo{
+  id: number,
+  name: string,
+  image: string,
+  introduction?:string
 }

@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="mt-nav d-flex flex-wrap px-4">
+
+
+  </div>
+
+
+  <div id="page-body">
+    <div class="d-flex flex-wrap" >
+
+      <div class="col-12 col-md-4 px-4 " style="margin-top: 50px;">
+        <div class="d-flex flex-column w-100">
+          <div class="my-pic ">
+            <div class="my-photo" [style]="{backgroundImage:'url('+articleAuthorInfo.image+')'}"></div>
+          </div>
+
+          <div class="my-detail ">
+            <div class="white-spacing">
+              <h1>{{articleAuthorInfo.name}}</h1>
+              <span [innerHTML]="articleAuthorInfo.introduction?articleAuthorInfo.introduction:'尚無自介'"></span>
+            </div>
+
+            <!-- <ul class="social-icon">
+                  <li><a [href]="" target="_blank" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                  <li><a [href]="" target="_blank" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                  <li><a [href]="" target="_blank" class="github"><i class="fa fa-github"></i></a></li>
+                </ul> -->
+
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="col-12 col-md-8 d-flex flex-wrap  page-body article-list" style="position: relative;">
+        <div class="col-12 mt-3">
+          <h1 class="mb-0"> {{articleAuthorInfo.name}} <span style="font-size: 1rem;">共 {{articleToDisplay.length}} 篇文章</span></h1>
+        </div>
+        <ul class="col-12">
+          <li *ngFor="let article of articleToDisplay">
+            <app-article-card [article]="article"></app-article-card>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+<a (click)="scrollToTop()" *ngIf="scrollToTopButtonShow" class="scroll-to-top"
+  style="display: inline; cursor: pointer;"><i class="fa fa-long-arrow-up"></i></a>

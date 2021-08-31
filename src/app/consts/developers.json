@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Usong",
+    "major": "Front-End Web Developer",
+    "photo": "/assets/images/author/頭貼.jpg",
+    "fb": "https://www.facebook.com/yousong.zhang/",
+    "ig": "https://www.instagram.com/seanttc/",
+    "gh": "https://github.com/seandp1a"
+  }, {
+    "name": "Roy",
+    "major": "Back-End Web Developer",
+    "photo": "/assets/images/author/阿怎樣嘞.png",
+    "fb": "https://www.facebook.com/roy22887/",
+    "ig": "https://www.instagram.com/comman24/",
+    "gh": "https://github.com/cc711612"
+  }
+]

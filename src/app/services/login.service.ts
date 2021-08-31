@@ -1,4 +1,4 @@
-import { USER_API, LOGIN_API, LOGOUT_API } from './apiName';
+import { USER_API, LOGIN_API, LOGOUT_API } from '../consts/apiName';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
@@ -38,7 +38,7 @@ export class LoginService {
     return false;
   }
 
-  getLatestUserData(id: number, token: string) {
+  getLatestUserData(id: number, token?: string) {
     this.http.get<LatestUserResponse>(USER_API + `/${id}`).subscribe((res: LatestUserResponse) => {
       const temp = {
         id: res.data.id,
