@@ -59,13 +59,13 @@ export class HomeComponent implements OnInit {
 
   public developers = (DEVELOPERS as any).default;
 
-
   public pageInfo: Paginate = {
     current_page: 1,
     last_page: 1,
     per_page: 10,
     total: 0
   }
+  public listCollapse = true;
 
   public scrollToTop() {
     window.scroll({
@@ -94,6 +94,10 @@ export class HomeComponent implements OnInit {
       this.articleToDisplay = res.data.articles;
       this.pageInfo = res.data.paginate;
     })
+  }
+
+  public listCollapseToggle(){
+    this.listCollapse=!this.listCollapse;
   }
 
   ngOnInit(): void {
