@@ -38,15 +38,17 @@
         </ng-template>
       </ngb-carousel>
       <!--  -->
+
       <div class="subtitle-list">
         <button class="toggle-button w-100 d-flex justify-content-between align-items-center pr-4 pl-2"
           (click)="listCollapseToggle()">
-          <div class="title">Article List</div><i class="fas fa-angle-down " [ngClass]="{'fa-rotate-90':listCollapse}"></i>
+          <div class="title">Article List</div><i class="fas fa-angle-down "
+            [ngClass]="{'fa-rotate-90':listCollapse}"></i>
         </button>
-        <div class="mt-4" [@smoothCollapse]="listCollapse?'initial':'final'" >
+        <div class="mt-4" [@smoothCollapse]="listCollapse?'initial':'final'">
           <div class="card py-2">
             <div class="subtitle-link" *ngFor="let article of articleToDisplay">
-              <a routerLink="/article/{{article.id}}" >{{article.sub_title}}</a>
+              <a routerLink="/article/{{article.id}}">{{article.sub_title}}</a>
             </div>
           </div>
         </div>
@@ -55,6 +57,10 @@
 
     <ul class="col-12 col-md-8 d-flex flex-column page-body article-list" style="position: relative;"
       [@articleAnimation]="articleToDisplay.length">
+      <div class="loader-container " style="margin: 0 -15px;" *ngIf="articleToDisplay.length<=0">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <!-- <mat-spinner class="ml-auto" diameter="40"></mat-spinner> -->
+      </div>
       <li *ngFor="let article of articleToDisplay">
         <app-article-card [article]="article"></app-article-card>
       </li>
