@@ -6,7 +6,7 @@
   </div>
   <div class="post-info">
     <span>{{article.updated_at| date:'longDate'}} / by
-      <a target="_blank" [routerLink]="['/article/search']" [queryParams]="{ authorID:article.user.id }">
+      <a [routerLink]="['/article/search']" [queryParams]="{ authorID:article.user.id }">
         {{article.user.name}}</a>
     </span>
   </div>

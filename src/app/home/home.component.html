@@ -43,7 +43,7 @@
           (click)="listCollapseToggle()">
           <div class="title">Article List</div><i class="fas fa-angle-down " [ngClass]="{'fa-rotate-90':listCollapse}"></i>
         </button>
-        <div [@smoothCollapse]="listCollapse?'initial':'final'" >
+        <div class="mt-4" [@smoothCollapse]="listCollapse?'initial':'final'" >
           <div class="card">
             <div class="subtitle-link" *ngFor="let article of articleToDisplay">
               <a routerLink="/article/{{article.id}}" >{{article.sub_title}}</a>
