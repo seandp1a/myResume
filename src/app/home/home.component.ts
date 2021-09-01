@@ -1,7 +1,8 @@
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleData, ArticleService, Paginate } from './../services/article.service';
 import { Component, HostBinding, HostListener, OnInit } from '@angular/core';
-import { trigger, state, style, animate, transition, query, stagger } from '@angular/animations';
+import { trigger, state, style, animate, transition, query, stagger, AUTO_STYLE, group, sequence } from '@angular/animations';
 import { ViewportScroller } from '@angular/common';
 import * as DEVELOPERS from 'src/app/consts/developers.json';
 
@@ -23,14 +24,43 @@ import * as DEVELOPERS from 'src/app/consts/developers.json';
     ]),
     trigger('articleAnimation', [
       transition('* <=> *', [
-        query(':enter',[
-          style({ opacity: 0 ,transform: 'translateX(-40%)'}),
-          stagger('100ms', animate('500ms ease-out', style({ opacity: 1 ,transform: 'translateX(0%)'})))
-        ],{ optional: true }),
+        query(':enter', [
+          style({ opacity: 0, transform: 'translateX(-40%)' }),
+          stagger('100ms', animate('500ms ease-out', style({ opacity: 1, transform: 'translateX(0%)' })))
+        ], { optional: true }),
         query(':leave',
           animate('300ms', style({ opacity: 0 })),
           { optional: true }
         )
+      ])
+    ]),
+    trigger('smoothCollapse', [
+      state('initial', style({
+        height: '0',
+        overflow: 'hidden'
+      })),
+      state('final', style({
+        overflow: 'hidden',
+        opacity: '1',
+        height: AUTO_STYLE
+      })),
+      // transition('initial=>final', animate('500ms ease-out')),
+      // transition('final=>initial', animate('500ms ease-in')),
+      transition('initial=>final', [
+        sequence([
+          style({ height: '0', overflow: 'hidden' }),
+          query('.subtitle-link', style({ opacity: 0 })),
+          animate('0.3s ease', style({ height: '*' })),
+          query('.subtitle-link', animate('0.7s ease', style({ opacity: 1 }))),
+        ])
+      ]),
+      transition('final=>initial', [
+        sequence([
+          style({ height: '*', overflow: 'hidden' }),
+          query('.subtitle-link', style({ opacity: 1 })),
+          query('.subtitle-link', animate('0.2s', style({ opacity: 0 }))),
+          animate('0.3s', style({ height: 0 }))
+        ])
       ])
     ])
   ]
@@ -89,15 +119,15 @@ export class HomeComponent implements OnInit {
   }
 
   getArticleList(page: number = 1, user?: string) {
-    this.articleToDisplay=[];
+    this.articleToDisplay = [];
     this.articleSvc.getArticleList(page, user).subscribe((res) => {
       this.articleToDisplay = res.data.articles;
       this.pageInfo = res.data.paginate;
     })
   }
 
-  public listCollapseToggle(){
-    this.listCollapse=!this.listCollapse;
+  public listCollapseToggle() {
+    this.listCollapse = !this.listCollapse;
   }
 
   ngOnInit(): void {

@@ -150,6 +150,17 @@
   font-style: normal;
   font-size: 2rem;
 }
+.subtitle-link{
+  padding: .5rem;
+  font-weight: 500;
+}
+.subtitle-link a{
+  color: #333333;
+  transition: 0.3s;
+}
+.subtitle-link a:hover{
+  color: teal;
+}
 
 
 @media screen and (min-width : 992px) {
