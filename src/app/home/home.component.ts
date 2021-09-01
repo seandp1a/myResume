@@ -44,14 +44,12 @@ import * as DEVELOPERS from 'src/app/consts/developers.json';
         opacity: '1',
         height: AUTO_STYLE
       })),
-      // transition('initial=>final', animate('500ms ease-out')),
-      // transition('final=>initial', animate('500ms ease-in')),
       transition('initial=>final', [
         sequence([
           style({ height: '0', overflow: 'hidden' }),
-          query('.subtitle-link', style({ opacity: 0 })),
+          query('.subtitle-link', style({ opacity: 0, transform: 'translateY(-40%)' })),
           animate('0.3s ease', style({ height: '*' })),
-          query('.subtitle-link', animate('0.7s ease', style({ opacity: 1 }))),
+          query('.subtitle-link', animate('0.7s ease', style({ opacity: 1, transform: 'translateY(0%)' }))),
         ])
       ]),
       transition('final=>initial', [
