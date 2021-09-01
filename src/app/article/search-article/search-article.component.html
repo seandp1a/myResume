@@ -1,4 +1,8 @@
 <div class="container">
+  <div id="spinner" class="spinner-container " @spinnerAnimations *ngIf="showProgressSpinner" >
+    <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
+    <mat-spinner  diameter="100" style="top:50%;left:50%;"></mat-spinner>
+  </div>
   <div class="mt-nav d-flex flex-wrap px-4">
 
 

@@ -1,3 +1,4 @@
+import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -9,7 +10,18 @@ import { LoginUser, LoginService } from 'src/app/services/login.service';
 @Component({
   selector: 'app-single-article',
   templateUrl: './single-article.component.html',
-  styleUrls: ['./single-article.component.css']
+  styleUrls: ['./single-article.component.css'],
+  animations:[
+    trigger('spinnerAnimations', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('100ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('500ms ease-out', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class SingleArticleComponent implements OnInit {
 
@@ -69,10 +81,17 @@ export class SingleArticleComponent implements OnInit {
   public edditEditorData;
   public deleteSuccessAlert = false;
   public deleteCommentId=0;
+  // progress
+  public showProgressBar = false;
+  public showProgressSpinner = true;
 
   getSingleArticle(id) {
     this.articleSvc.getSingleArticle(id).subscribe((res) => {
-      this.articleDetail = res.data;
+      if(res.code===200){
+        this.showProgressSpinner= false;
+        this.articleDetail = res.data;
+      }
+
     })
   }
 
@@ -98,6 +117,7 @@ export class SingleArticleComponent implements OnInit {
   }
 
   edditComment(id) {
+    this.showProgressBar = true;
     if (this.edditEditorData && this.edditEditorData.trim() !== '') {
       this.articleSvc.sendComment({
         article_id: this.articleDetail.id,
@@ -105,6 +125,7 @@ export class SingleArticleComponent implements OnInit {
         member_token: this.loginUserInfo.member_token
       }, id).subscribe((res) => {
         if (res.code === 200) {
+          this.showProgressBar = false;
           this.getCommentById(this.articleDetail.id);
           setTimeout(() => {
             this.turnOffEditMode();

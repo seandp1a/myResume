@@ -60,6 +60,15 @@ import * as DEVELOPERS from 'src/app/consts/developers.json';
           animate('0.3s', style({ height: 0 }))
         ])
       ])
+    ]),
+    trigger('progressBarAnimations', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('100ms', style({ opacity: 0 })),
+      ]),
+      transition(':leave', [
+        animate('500ms ease-out', style({ height:0, opacity: 1 }))
+      ])
     ])
   ]
 })
@@ -84,7 +93,7 @@ export class HomeComponent implements OnInit {
   onWindowScroll() {
     this.scrollToTopButtonShow = window.pageYOffset > 850 ? true : false;
   }
-
+  public showProgressBar = true;
   public developers = (DEVELOPERS as any).default;
 
   public pageInfo: Paginate = {
@@ -119,8 +128,12 @@ export class HomeComponent implements OnInit {
   getArticleList(page: number = 1, user?: string) {
     this.articleToDisplay = [];
     this.articleSvc.getArticleList(page, user).subscribe((res) => {
-      this.articleToDisplay = res.data.articles;
-      this.pageInfo = res.data.paginate;
+      if(res.code===200){
+        this.showProgressBar = false;
+        this.articleToDisplay = res.data.articles;
+        this.pageInfo = res.data.paginate;
+      }
+
     })
   }
 

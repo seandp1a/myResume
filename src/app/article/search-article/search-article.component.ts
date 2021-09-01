@@ -1,3 +1,4 @@
+import { trigger, transition, style, animate } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as DEVELOPERS from 'src/app/consts/developers.json';
@@ -6,7 +7,18 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-search-article',
   templateUrl: './search-article.component.html',
-  styleUrls: ['./search-article.component.css']
+  styleUrls: ['./search-article.component.css'],
+  animations:[
+    trigger('spinnerAnimations', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('100ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('500ms ease-out', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class SearchArticleComponent implements OnInit {
 
@@ -18,7 +30,7 @@ export class SearchArticleComponent implements OnInit {
   ) { }
 
   public developers = (DEVELOPERS as any).default;
-
+  public showProgressSpinner = true;
   public scrollToTopButtonShow = false;
 
   public scrollToTop() {
@@ -46,6 +58,7 @@ export class SearchArticleComponent implements OnInit {
   public getArticleList(page: number = 1, user?: string) {
     this.articleToDisplay = [];
     this.articleSvc.getArticleList(page, user).subscribe((res) => {
+      this.showProgressSpinner= false;
       this.articleToDisplay = res.data.articles;
       this.pageInfo = res.data.paginate;
     })

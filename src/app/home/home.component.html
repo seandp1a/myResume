@@ -57,7 +57,7 @@
 
     <ul class="col-12 col-md-8 d-flex flex-column page-body article-list" style="position: relative;"
       [@articleAnimation]="articleToDisplay.length">
-      <div class="loader-container " style="margin: 0 -15px;" *ngIf="articleToDisplay.length==0">
+      <div class="loader-container " style="margin: 0 -15px;" @progressBarAnimations *ngIf="showProgressBar ">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         <!-- <mat-spinner class="ml-auto" diameter="40"></mat-spinner> -->
       </div>
