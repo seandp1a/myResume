@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from './../components/components.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
@@ -17,7 +18,8 @@ import { InsertArticleComponent } from './insert-article/insert-article.componen
     ArticleRoutingModule,
     CKEditorModule,
     NgbModule,
-    ComponentsModule
+    ComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class ArticleModule { }

@@ -1,4 +1,21 @@
 <div class="container">
   <div class="mt-nav px-4"></div>
+  <div class="d-flex flex-column col-12 col-md-8 mx-auto mt-2 ">
+    <form [formGroup]="postFormGroup" class="my-3">
+      <mat-form-field class="w-100 my-3">
+        <input type="text" name="title" matInput required  formControlName="title" placeholder="TITLE" />
+        <mat-error *ngIf="title.touched&&title.invalid">
+          請輸入3~20字以內的<strong>標題</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <ckeditor  class="my-3" [(config)]="editorConfig" formControlName="content">
+      </ckeditor>
+      <mat-error *ngIf="content.touched&&content.invalid">
+        <small> <strong>文章內容請輸入至少15個字</strong></small>
+      </mat-error>
+    </form>
+    <button class="ml-auto" mat-raised-button color="primary" (click)="postArticle()">送出</button>
+  </div>
 
 </div>

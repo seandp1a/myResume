@@ -5,6 +5,11 @@ import { CommonModule } from '@angular/common';
 import { ArticleCardComponent } from './article-card/article-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 @NgModule({
   declarations: [ArticleCardComponent],
   imports: [
@@ -12,14 +17,22 @@ import { MatIconModule } from '@angular/material/icon';
     RouterModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSnackBarModule
   ],
   exports: [
     CommonModule,
     ArticleCardComponent,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSnackBarModule
   ]
 })
 export class ComponentsModule { }

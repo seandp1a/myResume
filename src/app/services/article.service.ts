@@ -23,22 +23,28 @@ export class ArticleService {
     return this.http.get<SingleArticleResponse>(ARTICLE_API + `/${id}`);
   }
 
-  public sendComment(body: { article_id: number, content: string, member_token: string },commentId?:number) {
-    if(commentId){
-      return this.http.put<BackendResponseInfo>(COMMENT_API+`/${commentId}`, body);
+  public postArticle(body: { title: string, content: string, member_token: string }) {
+    return this.http.post<BackendResponseInfo>(ARTICLE_API, body);
+  }
+
+  public sendComment(body: { article_id: number, content: string, member_token: string }, commentId?: number) {
+    if (commentId) {
+      return this.http.put<BackendResponseInfo>(COMMENT_API + `/${commentId}`, body);
     }
     return this.http.post<BackendResponseInfo>(COMMENT_API, body);
   }
 
-  public deleteComment(token: string ,commentId){
+  public deleteComment(token: string, commentId) {
     let headers = new HttpHeaders();
     headers.append('Authorization', `Bearer ${token}`);
-    return this.http.request<BackendResponseInfo>('delete',COMMENT_API+`/${commentId}`,{ body: { member_token: token }, headers: headers });
+    return this.http.request<BackendResponseInfo>('delete', COMMENT_API + `/${commentId}`, { body: { member_token: token }, headers: headers });
   }
 
-  public getCommentByArticleId(id:number){
-    return this.http.get<CommentResponse>(COMMENT_API+`?article_id=${id}`);
+  public getCommentByArticleId(id: number) {
+    return this.http.get<CommentResponse>(COMMENT_API + `?article_id=${id}`);
   }
+
+
 
 }
 
@@ -52,8 +58,8 @@ export interface SingleArticleResponse extends BackendResponseInfo {
   data: SingleArticle
 }
 
-export interface CommentResponse extends BackendResponseInfo{
-  data:Comment[]
+export interface CommentResponse extends BackendResponseInfo {
+  data: Comment[]
 }
 
 
@@ -63,7 +69,7 @@ export interface ArticleData {
   sub_title: string
   title: string
   updated_at: string
-  user:UserSimpleInfo
+  user: UserSimpleInfo
 }
 
 export interface Paginate {
@@ -75,12 +81,12 @@ export interface Paginate {
 
 export interface Comment {
   id: number,
-  user:UserSimpleInfo,
+  user: UserSimpleInfo,
   content: string,
   updated_at: string,
-  logs:{
-    content:string,
-    updated_at:string
+  logs: {
+    content: string,
+    updated_at: string
   }[]
 }
 
@@ -92,12 +98,12 @@ export interface SingleArticle {
   sub_title: string,
   title: string,
   updated_at: string,
-  user:UserSimpleInfo
+  user: UserSimpleInfo
 }
 
-export interface UserSimpleInfo{
+export interface UserSimpleInfo {
   id: number,
   name: string,
   image: string,
-  introduction?:string
+  introduction?: string
 }
