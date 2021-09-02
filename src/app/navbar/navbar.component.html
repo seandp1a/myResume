@@ -20,6 +20,9 @@
         <li class="nav-item" [ngClass]="{active:pathName==='userList'}">
           <a class="nav-link" routerLink="/userList">UserList</a>
         </li>
+        <li class="nav-item" [ngClass]="{active:pathName.includes('post')}" *ngIf="isLogin">
+          <a class="nav-link" routerLink="/article/post">Post</a>
+        </li>
         <li class="nav-item" [ngClass]="{active:pathName==='login'}" *ngIf="!isLogin">
           <a class="nav-link" routerLink="/login">Login</a>
         </li>

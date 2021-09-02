@@ -12,6 +12,7 @@ const routes: Routes = [
       { path: ':authorID', component: InsertArticleComponent }
     ]
   },
+  { path: 'post', component: InsertArticleComponent },
   { path: ':id', component: SingleArticleComponent },
   { path: '**', redirectTo: '/home/page/1' }
 ];

@@ -1,3 +1,4 @@
+import { CookieService } from 'ngx-cookie-service';
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
 
 
   constructor(
-    private loginSvc: LoginService, private route: Router) { }
+    private loginSvc: LoginService, private route: Router,private cookieSvc:CookieService) { }
 
   public email: string;
   public password: string;
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
       if (res.status === true) {
         this.isSuccess = true; // alert提醒
         this.loginSvc.loginUserInfo.next(res.data); // 更新登入資料
+        this.cookieSvc.set('userData',JSON.stringify({ id: res.data.id, member_token: res.data.member_token }))
         sessionStorage.setItem('userData', JSON.stringify({ id: res.data.id, member_token: res.data.member_token }));
         setTimeout(() => {
           this.route.navigate(['/home/page/1']);

@@ -29,7 +29,7 @@ import * as DEVELOPERS from 'src/app/consts/developers.json';
           stagger('100ms', animate('500ms ease-out', style({ opacity: 1, transform: 'translateX(0%)' })))
         ], { optional: true }),
         query(':leave',
-          animate('300ms', style({ opacity: 0 })),
+          animate('300ms', style({ height:0, opacity: 0 })),
           { optional: true }
         )
       ])
@@ -59,15 +59,6 @@ import * as DEVELOPERS from 'src/app/consts/developers.json';
           query('.subtitle-link', animate('0.2s', style({ opacity: 0 }))),
           animate('0.3s', style({ height: 0 }))
         ])
-      ])
-    ]),
-    trigger('progressBarAnimations', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('100ms', style({ opacity: 0 })),
-      ]),
-      transition(':leave', [
-        animate('500ms ease-out', style({ height:0, opacity: 1 }))
       ])
     ])
   ]

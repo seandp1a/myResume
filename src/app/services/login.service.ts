@@ -3,13 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { BackendResponseInfo, UserListResponse, UserData } from './user.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private cookieSvc:CookieService) {
     this.isLogin();
   }
 
@@ -18,7 +19,7 @@ export class LoginService {
 
   /**
    * 如果loginUserInfo(replaySubject)有值，回傳true
-   * 如果loginUserInfo沒有值，看sessionStorage，有值將值補回loginUserInfo並回傳true
+   * 如果loginUserInfo沒有值，看cookie，有值將值補回loginUserInfo並回傳true
    * 都沒值回傳false
    * @returns
    */
@@ -29,12 +30,13 @@ export class LoginService {
       }
     });
 
-    if (sessionStorage.getItem('userData')) {
-      const id = JSON.parse(sessionStorage.getItem('userData')).id;
-      const token = JSON.parse(sessionStorage.getItem('userData')).member_token;
+    if(this.cookieSvc.check('userData')){
+      const id = JSON.parse(this.cookieSvc.get('userData')).id;
+      const token = JSON.parse(this.cookieSvc.get('userData')).member_token;
       this.getLatestUserData(id, token);
       return true;
     }
+
     return false;
   }
 
@@ -60,7 +62,7 @@ export class LoginService {
   }
 
   logoutUser(token: string) {
-    sessionStorage.clear();
+    this.cookieSvc.deleteAll();
     this.loginUserInfo.next(null);
     this.http.post(LOGOUT_API, { member_token: token });
   }
