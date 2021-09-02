@@ -1,3 +1,4 @@
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -31,10 +32,11 @@ export class SingleArticleComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
     public loginSvc: LoginService,
-    public sanitizer: DomSanitizer) {
+    public sanitizer: DomSanitizer,
+    private formBuilder: FormBuilder) { }
 
-  }
-
+  public window = window;
+  public subscribeForm :FormGroup;
   public articleDetail: SingleArticle = {
     comments: [],
     length: 0,
@@ -191,6 +193,10 @@ export class SingleArticleComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.subscribeForm =  this.formBuilder.group({
+      email:['']
+    });
+    console.log(this.viewport.getScrollPosition())
     this.viewport.scrollToPosition([0, 0]);
     this.activatedRoute.params.subscribe((res) => {
       this.getSingleArticle(res.id);
@@ -202,6 +208,7 @@ export class SingleArticleComponent implements OnInit {
     }, (e) => {
       console.log(e);
     });
+
   }
 
 }

@@ -31,7 +31,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 4; /* number of lines to show */
+  -webkit-line-clamp: 2; /* number of lines to show */
   -webkit-box-orient: vertical;
   white-space:normal;
 }
@@ -169,8 +169,8 @@
   position: absolute;
   z-index: 99;
   opacity: 0.8;
-  top: 0;
   left: 0;
+  top: 0;
 }
 
 

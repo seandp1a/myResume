@@ -1,3 +1,4 @@
+import { ComponentsModule } from './../components/components.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserRoutingModule } from './user-routing.module';
 import { NgModule } from '@angular/core';

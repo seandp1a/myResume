@@ -70,6 +70,7 @@ export interface ArticleData {
   title: string
   updated_at: string
   user: UserSimpleInfo
+  preview_content:string
 }
 
 export interface Paginate {
