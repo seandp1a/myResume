@@ -172,11 +172,16 @@
           <!-- Post Comment (Disqus) End -->
           <!-- Modal -->
           <ng-template #deleteModal let-modal>
+
             <div class="modal-header">
               <h4 class="modal-title" id="modal-basic-title">刪除{{deleteMode==='c'?'留言':'文章'}}</h4>
               <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 <span aria-hidden="true">&times;</span>
               </button>
+            </div>
+            <div class="loader-container " *ngIf="deleteProgressBar">
+              <mat-progress-bar color="warn" mode="indeterminate"></mat-progress-bar>
+              <!-- <mat-spinner class="ml-auto" diameter="40"></mat-spinner> -->
             </div>
             <div class="modal-body">
               <ngb-alert class="myalert" [type]="'success'" [dismissible]="false" *ngIf="deleteSuccessAlert">成功刪除

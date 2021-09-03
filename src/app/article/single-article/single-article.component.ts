@@ -89,6 +89,7 @@ export class SingleArticleComponent implements OnInit {
   // progress
   public showProgressBar = false;
   public showProgressSpinner = true;
+  public deleteProgressBar = false;
 
   getSingleArticle(id) {
     this.articleSvc.getSingleArticle(id).subscribe((res) => {
@@ -107,8 +108,10 @@ export class SingleArticleComponent implements OnInit {
   }
 
   deleteArticle(modal) {
+    this.deleteProgressBar=true;
     this.articleSvc.deleteArticle(this.loginUserInfo.member_token, this.deleteArticleId).subscribe((res) => {
       if (res.code === 200) {
+        this.deleteProgressBar=false;
         this.deleteSuccessAlert = true;
         setTimeout(() => {
           modal.close('delete-complete');
@@ -165,8 +168,10 @@ export class SingleArticleComponent implements OnInit {
   }
 
   deleteComment(modal) {
+    this.deleteProgressBar=true;
     this.articleSvc.deleteComment(this.loginUserInfo.member_token, this.deleteCommentId).subscribe((res) => {
       if (res.code === 200) {
+        this.deleteProgressBar=false;
         this.deleteSuccessAlert = true;
         setTimeout(() => {
           modal.close('delete-complete');
@@ -176,8 +181,6 @@ export class SingleArticleComponent implements OnInit {
       }
     });
   }
-
-
 
   getCommentById(id) {
     this.articleSvc.getCommentByArticleId(id).subscribe((res) => {
