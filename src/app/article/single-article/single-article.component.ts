@@ -12,7 +12,7 @@ import { LoginUser, LoginService } from 'src/app/services/login.service';
   selector: 'app-single-article',
   templateUrl: './single-article.component.html',
   styleUrls: ['./single-article.component.css'],
-  animations:[
+  animations: [
     trigger('spinnerAnimations', [
       transition(':enter', [
         style({ opacity: 0 }),
@@ -36,7 +36,7 @@ export class SingleArticleComponent implements OnInit {
     private formBuilder: FormBuilder) { }
 
   public window = window;
-  public subscribeForm :FormGroup;
+  public subscribeForm: FormGroup;
   public articleDetail: SingleArticle = {
     comments: [],
     length: 0,
@@ -52,7 +52,7 @@ export class SingleArticleComponent implements OnInit {
     }
   }
   // 新增留言相關
-  public commentToDisplay:Comment[] = [];
+  public commentToDisplay: Comment[] = [];
   public editorData;
   public editorConfig = {
     toolbar: [
@@ -81,21 +81,45 @@ export class SingleArticleComponent implements OnInit {
     id: 0,
   }
   public edditEditorData;
+  // 刪除 留言&文章 相關
   public deleteSuccessAlert = false;
-  public deleteCommentId=0;
+  public deleteMode = '';
+  public deleteCommentId = 0;
+  public deleteArticleId = 0;
   // progress
   public showProgressBar = false;
   public showProgressSpinner = true;
 
   getSingleArticle(id) {
     this.articleSvc.getSingleArticle(id).subscribe((res) => {
-      if(res.code===200){
-        this.showProgressSpinner= false;
+      if (res.code === 200) {
+        this.showProgressSpinner = false;
         this.articleDetail = res.data;
       }
 
     })
   }
+
+  editArticle() {
+    this.route.navigate(['/article/post'], {
+      queryParams: { id: this.articleDetail.id }
+    });
+  }
+
+  deleteArticle(modal) {
+    this.articleSvc.deleteArticle(this.loginUserInfo.member_token, this.deleteArticleId).subscribe((res) => {
+      if (res.code === 200) {
+        this.deleteSuccessAlert = true;
+        setTimeout(() => {
+          modal.close('delete-complete');
+        }, 1000);
+      } else {
+        alert(res.message.member_token);
+      }
+    });
+  }
+
+  // Comment CRUD
 
   insertCommit() {
     if (this.editorData && this.editorData.trim() !== '') {
@@ -141,42 +165,55 @@ export class SingleArticleComponent implements OnInit {
   }
 
   deleteComment(modal) {
-      this.articleSvc.deleteComment(this.loginUserInfo.member_token,this.deleteCommentId).subscribe((res)=>{
-        if(res.code === 200){
-         this.deleteSuccessAlert = true;
-         setTimeout(() => {
-           modal.close('delete-complete');
-         }, 1000);
-        }else{
-          alert(res.message.member_token);
-        }
-      })
-
+    this.articleSvc.deleteComment(this.loginUserInfo.member_token, this.deleteCommentId).subscribe((res) => {
+      if (res.code === 200) {
+        this.deleteSuccessAlert = true;
+        setTimeout(() => {
+          modal.close('delete-complete');
+        }, 1000);
+      } else {
+        alert(res.message.member_token);
+      }
+    });
   }
 
-  getCommentById(id){
-    this.articleSvc.getCommentByArticleId(id).subscribe((res)=>{
-      if(res.code===200){
+
+
+  getCommentById(id) {
+    this.articleSvc.getCommentByArticleId(id).subscribe((res) => {
+      if (res.code === 200) {
         this.commentToDisplay = res.data;
       }
     })
   }
 
+  private resetDelModal(type) {
+    this.deleteSuccessAlert = false;
+    if (type === 'c') {
+      this.deleteCommentId = 0;
+      this.deleteMode = '';
+      this.getCommentById(this.articleDetail.id);
+    }
+    if (type === 'a') {
+      this.deleteArticleId = 0;
+      this.deleteMode = '';
+      this.route.navigate(['/home/page']);
+    }
+  }
+
   // modal 在template被打開後 丟被指定的modal近來 用modalService去控制這個modal
-  open(content, id) {
+  open(content, id, type) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'md' }).result.then((result) => {
       // 此處為modal 發生close事件 result為事件觸發原因
       console.log(`Modal close reason: ${result}`);
-      this.deleteSuccessAlert = false;
-      this.deleteCommentId = 0;
-      this.getCommentById(this.articleDetail.id);
+      this.resetDelModal(type);
     }, (reason) => {
       // 此處為modal 發生dismiss事件 reason為事件觸發原因
-      this.deleteSuccessAlert = false;
-      this.deleteCommentId = 0;
+      this.resetDelModal(type);
       console.log(`Dismissed`);
     });
-    this.deleteCommentId = id;
+    if (type === 'c') this.deleteCommentId = id;
+    if (type === 'a') this.deleteArticleId = id;
   }
 
 
@@ -191,10 +228,22 @@ export class SingleArticleComponent implements OnInit {
     this.edditEditorData = '';
   }
 
+  pickDeleteMode(content, type, id) {
+    this.deleteMode = (type === 'a') ? 'a' : 'c';
+    this.open(content, id, type);
+    // 1.判斷 刪除文章(type = a) or 刪除留言(type = c)
+    //   並儲存於 this.deleteMode
+    // 2.用open function打開modal
+    // 3.判斷 刪除的是文章還是留言，給予其對應變數id
+    //   (若type='a'，就把傳進來的id 放在this.deleteArticleId)
+    // 4.modal上的刪除按鈕會判斷this.deleteMode是a OR c，而進入不同function
+    // 5.完成刪除後將modal和用到的相關變數初始化
+  }
+
 
   ngOnInit(): void {
-    this.subscribeForm =  this.formBuilder.group({
-      email:['']
+    this.subscribeForm = this.formBuilder.group({
+      email: ['']
     });
     console.log(this.viewport.getScrollPosition())
     this.viewport.scrollToPosition([0, 0]);

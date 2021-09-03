@@ -1,6 +1,6 @@
 <div id="spinner" class="spinner-container " @spinnerAnimations *ngIf="showProgressSpinner">
-    <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
-    <mat-spinner diameter="100" style="top:50%;" class="mx-auto"></mat-spinner>
+  <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
+  <mat-spinner diameter="100" style="top:50%;" class="mx-auto"></mat-spinner>
 </div>
 <div class="container">
 
@@ -15,19 +15,37 @@
           <a class="smoth-scroll" style="cursor: pointer;"
             onclick="window.scrollTo({top: document.getElementById('comment').offsetTop,left: 0, behavior: 'smooth'});">
             <i class="icon-bubbles"></i></a>
+          <div class="pt-4 d-flex justify-content-between justify-content-md-end w-100">
+            <a style="cursor: pointer;" *ngIf="articleDetail.user.id===loginUserInfo.id"
+               (click)="pickDeleteMode(deleteModal,'a',articleDetail.id)" >
+              <mat-icon aria-hidden="false" class="mr-md-4" style="font-size: 35px; width: 35px; height: 36px;"
+                aria-label="Example edit icon">delete</mat-icon>
+            </a>
+            <a style="cursor: pointer;" *ngIf="articleDetail.user.id===loginUserInfo.id" (click)="editArticle()">
+              <mat-icon aria-hidden="false" class="" style="font-size: 35px; width: 35px; height: 36px;"
+                aria-label="Example edit icon">edit</mat-icon>
+            </a>
+          </div>
+
+
+
         </div>
-        <div class="col-md-12 " style="display: block;">
+        <div class="col-md-12 mt-3" style="display: block;">
+          <div class="px-3">
+            <div class="post-head px-4 py-4">
+              <div class="post-title my-2">
+                <h1 class="d-none d-md-block">{{articleDetail.title}}</h1>
+                <h3 class="d-block d-md-none">{{articleDetail.title}}</h3>
+              </div>
 
-          <div class="post-head px-3 py-3">
-            <div class="post-title ">
-              <h1>{{articleDetail.title}}</h1>
+              <div class="post-info">
+                <span>{{articleDetail.updated_at| date:'longDate'}} / by <a [routerLink]="['/article/search']"
+                    [queryParams]="{ authorID:articleDetail.user.id }"
+                    target="_blank">{{articleDetail.user.name}}</a></span>
+
+              </div>
             </div>
 
-            <div class="post-info ">
-              <span>{{articleDetail.updated_at| date:'longDate'}} / by <a [routerLink]="['/article/search']"
-                  [queryParams]="{ authorID:articleDetail.user.id }"
-                  target="_blank">{{articleDetail.user.name}}</a></span>
-            </div>
           </div>
 
           <!-- <p class="mt-3 px-3 post-content"
@@ -91,7 +109,7 @@
                     </div>
                     <div
                       class="ml-auto comment-btn d-flex col-12 col-sm-1  flex-row flex-sm-column flex-sm-column-reverse justify-content-between">
-                      <a (click)="open(deleteModal,item.id)" *ngIf="item.user.id===loginUserInfo.id">
+                      <a (click)="pickDeleteMode(deleteModal,'c',item.id)" *ngIf="item.user.id===loginUserInfo.id">
                         <i class="fas fa-trash "></i></a>
                       <a (click)="turnOnEditMode(item.id,item.content)" *ngIf="item.user.id===loginUserInfo.id">
                         <i class="fas fa-edit"></i></a>
@@ -152,6 +170,28 @@
 
           </div>
           <!-- Post Comment (Disqus) End -->
+          <!-- Modal -->
+          <ng-template #deleteModal let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">刪除{{deleteMode==='c'?'留言':'文章'}}</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <ngb-alert class="myalert" [type]="'success'" [dismissible]="false" *ngIf="deleteSuccessAlert">成功刪除
+              </ngb-alert>
+              確定要刪除此{{deleteMode==='c'?'留言':'文章'}}？
+            </div>
+            <div class="modal-footer px-4">
+              <button *ngIf="deleteMode==='c'" type="button" class="btn btn-outline-danger mr-auto"
+                (click)="deleteComment(modal)">Delete the comment</button>
+              <button *ngIf="deleteMode==='a'" type="button" class="btn btn-outline-danger mr-auto"
+                (click)="deleteArticle(modal)">Delete the article</button>
+              <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">取消</button>
+            </div>
+          </ng-template>
+          <!-- Modal -->
         </div>
       </div>
 
@@ -181,25 +221,6 @@
 
       <!-- Subscribe Form End -->
 
-      <!-- Modal -->
 
-      <ng-template #deleteModal let-modal>
-        <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">刪除留言</h4>
-          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <ngb-alert class="myalert" [type]="'success'" [dismissible]="false" *ngIf="deleteSuccessAlert">成功刪除
-          </ngb-alert>
-          確定要刪除此留言？
-        </div>
-        <div class="modal-footer px-4">
-          <button type="button" class="btn btn-outline-danger mr-auto" (click)="deleteComment(modal)">Delete</button>
-          <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">取消</button>
-        </div>
-      </ng-template>
-      <!-- Modal -->
     </div>
   </div>

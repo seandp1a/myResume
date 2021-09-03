@@ -6,12 +6,7 @@ import { SingleArticleComponent } from './single-article/single-article.componen
 
 
 const routes: Routes = [
-  {
-    path: 'search', children: [
-      { path: '', component: SearchArticleComponent, pathMatch: "full" },
-      { path: ':authorID', component: InsertArticleComponent }
-    ]
-  },
+  { path: 'search', component: SearchArticleComponent, pathMatch: "full" },
   { path: 'post', component: InsertArticleComponent },
   { path: ':id', component: SingleArticleComponent },
   { path: '**', redirectTo: '/home/page/1' }

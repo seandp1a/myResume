@@ -10,6 +10,7 @@ export class ArticleService {
 
   constructor(private http: HttpClient) { }
 
+  // Article 相關
 
   public getArticleList(page: number = 1, user?: string) {
     if (user) {
@@ -26,6 +27,17 @@ export class ArticleService {
   public postArticle(body: { title: string, content: string, member_token: string }) {
     return this.http.post<BackendResponseInfo>(ARTICLE_API, body);
   }
+
+  public editArticle(body: { title: string, content: string, member_token: string },articleId:number){
+    return this.http.put<BackendResponseInfo>(ARTICLE_API+`/${articleId}`, body);
+  }
+  public deleteArticle(token: string, articleId) {
+    let headers = new HttpHeaders();
+    headers.append('Authorization', `Bearer ${token}`);
+    return this.http.request<BackendResponseInfo>('delete', ARTICLE_API + `/${articleId}`, { body: { member_token: token }, headers: headers });
+  }
+
+  // Comment相關
 
   public sendComment(body: { article_id: number, content: string, member_token: string }, commentId?: number) {
     if (commentId) {

@@ -15,7 +15,8 @@
         <small> <strong>文章內容請輸入至少15個字</strong></small>
       </mat-error>
     </form>
-    <button class="ml-auto" mat-raised-button color="primary" (click)="postArticle()">送出</button>
+    <button *ngIf="mode===0" class="ml-auto" mat-raised-button color="primary" (click)="postArticle()">送出</button>
+    <button *ngIf="mode===1" class="ml-auto" mat-raised-button color="accent" (click)="editArticle()">更新</button>
   </div>
 
 </div>
